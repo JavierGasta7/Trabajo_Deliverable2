@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GymTrack - Sign In</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function setLogin(email, pass) {
+            document.getElementsByName("email")[0].value = email;
+            document.getElementsByName("password")[0].value = pass;
+        }
+    </script>
+</head>
+<body>
+
+<div class="menu">
+    <span class="brand">GYMTRACK</span>
+    <a href="index.html">Home</a>
+    <a href="login.html">Sign In</a>
+</div>
+
+<div class="subheader">Sign In</div>
+
+<div class="card">
+    <div class="title">GYMTRACK</div>
+    <div class="subtitle">University Gym Management System</div>
+
+    <form method="post" action="LoginServlet">
+        <label>University Email</label>
+        <input type="text" name="email" placeholder="you@university.edu" />
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+
+        <input type="submit" value="Sign In &rarr;" />
+    </form>
+
+    <hr>
+
+    <div class="quick">
+        <p>Quick access for demo:</p>
+        <button class="secondary" type="button" onclick="setLogin('admin@university.edu','Admin1234')">Sign in as Admin</button>
+        <button class="secondary" type="button" onclick="setLogin('ana.garcia@university.edu','Member1234')">Sign in as Member</button>
+        <button class="secondary" type="button" onclick="setLogin('carlos.mendez@university.edu','Instr1234')">Sign in as Instructor</button>
+    </div>
+</div>
+
+</body>
+</html>

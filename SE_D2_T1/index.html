@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GymTrack</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="menu">
+    <span class="brand">GYMTRACK</span>
+    <a href="index.html">Home</a>
+    <a href="login.html">Sign In</a>
+    <a href="LogoutServlet">Logout</a>
+</div>
+
+<div class="subheader">University Gym Management System &mdash; Functions index</div>
+
+<div class="card" style="max-width:700px;">
+    <div class="title">GYMTRACK</div>
+    <div class="subtitle">University Gym Management System</div>
+
+    <div class="alert">
+        <b>Step 1 &mdash; Sign in is required.</b><br>
+        All functions below need an active session. The Servlets read the user
+        from session attributes (userId, userRole, userEmail, userName).
+    </div>
+
+    <a href="login.html"><button class="primary" type="button">Sign In &rarr;</button></a>
+
+    <hr>
+
+    <p style="font-size:13px; color:#6b7280;">
+        <b>Quick test accounts:</b><br>
+        admin@university.edu / Admin1234<br>
+        carlos.mendez@university.edu / Instr1234<br>
+        ana.garcia@university.edu / Member1234 (active)<br>
+        javier.nunez@university.edu / Member1234 (inactive)
+    </p>
+</div>
+
+<h2>Available functions</h2>
+
+<table style="max-width:1000px;">
+    <tr>
+        <th>Function</th>
+        <th>Author</th>
+        <th>Description</th>
+        <th>Recommended test data</th>
+    </tr>
+
+    <tr>
+        <td><a href="LoginServlet">LoginServlet</a></td>
+        <td>Common</td>
+        <td>Authenticates user against the BD and creates session with the 4 attributes.</td>
+        <td>Use any of the test accounts (see above).</td>
+    </tr>
+
+    <tr>
+        <td><a href="LogoutServlet">LogoutServlet</a></td>
+        <td>Common</td>
+        <td>Invalidates the session and redirects to login.html.</td>
+        <td>Click after signing in.</td>
+    </tr>
+
+    <tr>
+        <td><a href="BrowseClassesServlet">BrowseClassesServlet</a></td>
+        <td>Marco</td>
+        <td>Lists available classes with filters by activity type and instructor. Shows current spots / capacity.</td>
+        <td>Sign in as ana.garcia. Try filters: activity = "Yoga", or instructor id = 2 (Carlos Mendez).</td>
+    </tr>
+
+    <tr>
+        <td><a href="BookClassServlet?classId=4">BookClassServlet</a></td>
+        <td>Marco</td>
+        <td>Books a class. Validates: membership active, not already booked, spots available.</td>
+        <td>
+            Sign in as ana.garcia and book class 4 (Zumba) &mdash; should succeed.<br>
+            Sign in as javier.nunez and try &mdash; should fail (membership inactive).<br>
+            Sign in as ana.garcia and try class 1 &mdash; should fail (already booked).
+        </td>
+    </tr>
+
+    <tr>
+        <td><a href="CancelBookingServlet?bookingId=1">CancelBookingServlet</a></td>
+        <td>Marco</td>
+        <td>Cancels an existing booking. Validates &gt;2h before class start. Releases the spot.</td>
+        <td>
+            Sign in as ana.garcia and cancel booking 1 (Yoga) or 2 (Spinning).<br>
+            Try with another user&#39;s booking &mdash; should be rejected.
+        </td>
+    </tr>
+
+    <tr>
+        <td><a href="BookingHistoryServlet">BookingHistoryServlet</a></td>
+        <td>Marco</td>
+        <td>Full history of the logged member: confirmed, completed and cancelled bookings, with action to rate completed ones.</td>
+        <td>Sign in as ana.garcia (has 2 bookings) or laura.torres (has 2 bookings).</td>
+    </tr>
+</table>
+
+<p style="text-align:center; color:#6b7280; font-size:12px; margin:30px;">
+    Database: <code>gymtrack.accdb</code> in the project root (read with UCanAccess via JDBC).
+</p>
+
+</body>
+</html>
