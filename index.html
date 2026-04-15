@@ -97,6 +97,57 @@
         <td>Full history of the logged member: confirmed, completed and cancelled bookings, with action to rate completed ones.</td>
         <td>Sign in as ana.garcia (has 2 bookings) or laura.torres (has 2 bookings).</td>
     </tr>
+	
+	<tr>
+		<td><a href="OccupancyMonitorServlet">OccupancyMonitorServlet</a></td>
+		<td>Ander</td>
+		<td>
+			Shows all classes with real-time occupancy using progress bars.
+			Full classes are highlighted in red.
+		</td>
+		<td>
+			Sign in as any user.<br>
+			Check classes with different occupancy levels (low, nearly full, full).
+		</td>
+	</tr>
+	
+	<tr>
+		<td><a href="RateClassServlet?classId=4">RateClassServlet</a></td>
+		<td>Ander</td>
+		<td>
+			Allows a member to rate a completed class (1–5 stars + optional comment).
+			Only one rating per member and class is allowed.
+		</td>
+		<td>
+			Sign in as ana.garcia (has completed classes).<br>
+			Try rating class 4.<br>
+			Try rating the same class again → should fail.
+		</td>
+	</tr>
+	
+	<tr>
+		<td><a href="ClassCatalogueServlet">ClassCatalogueServlet</a></td>
+		<td>Ander</td>
+		<td>
+			Admin can edit or cancel any class. Cancelling a class cancels all bookings.
+		</td>
+		<td>
+			Sign in as admin.<br>
+			Try canceling a class → bookings should be cancelled.
+		</td>
+	</tr>
+	
+	<tr>
+		<td><a href="AdminDashboardServlet">AdminDashboardServlet</a></td>
+		<td>Ander</td>
+		<td>
+			Admin panel showing global metrics and pending user approvals.
+		</td>
+		<td>
+			Sign in as admin.<br>
+			Approve pending users.
+		</td>
+	</tr>
 </table>
 
 <p style="text-align:center; color:#6b7280; font-size:12px; margin:30px;">

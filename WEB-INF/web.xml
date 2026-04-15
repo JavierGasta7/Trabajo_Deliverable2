@@ -4,6 +4,26 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+	
+	<servlet>
+		<servlet-name>RateClassServlet</servlet-name>
+		<servlet-class>RateClassServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>AdminDashboardServlet</servlet-name>
+		<servlet-class>AdminDashboardServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ClassCatalogueServlet</servlet-name>
+		<servlet-class>ClassCatalogueServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>OccupancyMonitorServlet</servlet-name>
+		<servlet-class>OccupancyMonitorServlet</servlet-class>
+	</servlet>
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -64,5 +84,25 @@
         <servlet-name>BookingHistoryServlet</servlet-name>
         <url-pattern>/BookingHistoryServlet</url-pattern>
     </servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>OccupancyMonitorServlet</servlet-name>
+		<url-pattern>/OccupancyMonitorServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>RateClassServlet</servlet-name>
+		<url-pattern>/RateClassServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ClassCatalogueServlet</servlet-name>
+		<url-pattern>/ClassCatalogueServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>AdminDashboardServlet</servlet-name>
+		<url-pattern>/AdminDashboardServlet</url-pattern>
+	</servlet-mapping>
 
 </web-app>
