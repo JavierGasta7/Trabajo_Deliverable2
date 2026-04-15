@@ -22,7 +22,7 @@ public class BookClassServlet extends HttpServlet {
 
         res.setContentType("text/html");
         PrintWriter toClient = res.getWriter();
-        toClient.println(Utils.header("Book Class"));
+        toClient.println(Utils.header("Book Class", session));
 
         String classIdStr = req.getParameter("classId");
         if (classIdStr == null) {

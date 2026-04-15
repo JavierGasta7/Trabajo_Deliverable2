@@ -22,7 +22,7 @@ public class RateClassServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        out.println(Utils.header("Rate Class"));
+        out.println(Utils.header("Rate Class", session));
 
 
         if (classIdParam == null) {
@@ -72,7 +72,7 @@ public class RateClassServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Connection conn = null;
 
-        out.println(Utils.header("Rate Class Result"));
+        out.println(Utils.header("Rate Class Result", session));
 
         try {
             conn = ConnectionUtils.getConnection(getServletConfig());

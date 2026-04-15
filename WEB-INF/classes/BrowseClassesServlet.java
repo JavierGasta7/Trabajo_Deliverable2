@@ -22,7 +22,7 @@ public class BrowseClassesServlet extends HttpServlet {
 
         res.setContentType("text/html");
         PrintWriter toClient = res.getWriter();
-        toClient.println(Utils.header("Browse Classes"));
+        toClient.println(Utils.header("Browse Classes", session));
 
         toClient.println("<p style='text-align:center; color:#6b7280;'>" +
                          "Logged in as <b>" + userName + "</b> (" + userRole + ")</p>");

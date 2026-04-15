@@ -13,11 +13,13 @@ public class LoginServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        res.sendRedirect("login.html");
+        res.sendRedirect("index.html");
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        res.setContentType("text/html");
+        // 1. IMPORTANTE: Configurar UTF-8 para que el mensaje de error se vea bien
+        res.setContentType("text/html;charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
         PrintWriter toClient = res.getWriter();
 
         String email = req.getParameter("email");
@@ -31,23 +33,33 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userRole", user.role);
             session.setAttribute("userEmail", user.email);
             session.setAttribute("userName", user.fullName);
+            session.setAttribute("user", user);
 
-            toClient.println(Utils.header("Welcome"));
-            toClient.println("<div class='card'>");
-            toClient.println("<div class='success'>Sign in successful</div>");
-            toClient.println("<h2>Welcome back, " + user.fullName + "</h2>");
-            toClient.println("<p style='text-align:center;'>Role: <b>" + user.role + "</b></p>");
-            toClient.println("<p style='text-align:center;'>Membership: <b>" + user.membershipStatus + "</b></p>");
-            toClient.println("<a href='LogoutServlet'><button class='primary' type='button'>Sign Out</button></a>");
-            toClient.println("</div>");
-            toClient.println(Utils.footer("Welcome"));
+            if (user.role.equalsIgnoreCase("admin")) {
+                res.sendRedirect("AdminDashboardServlet");
+            } 
+            else if (user.role.equalsIgnoreCase("instructor") || user.role.equalsIgnoreCase("manager")) {
+                res.sendRedirect("InstructorDashboardServlet"); 
+            } 
+            else {
+                res.sendRedirect("MemberDashboardServlet"); 
+            }
+
         } else {
-            toClient.println(Utils.header("Sign In"));
-            toClient.println("<div class='card'>");
-            toClient.println("<div class='error'>Invalid email or password</div>");
-            toClient.println("<a href='login.html'><button class='primary' type='button'>Back to Sign In</button></a>");
+            // 2. SOLUCIÓN AL ERROR: 
+            // Como el login falló, NO hay sesión. Pasamos 'null' al header.
+            // Utils.header está preparado para recibir null y mandar al index.html
+            toClient.println(Utils.header("Error de acceso", null));
+            
+            toClient.println("<div class='card' style='max-width:400px; margin: 40px auto;'>");
+            toClient.println("<div class='title' style='color:#dc3545; text-align:center;'>Acceso Denegado</div>");
+            toClient.println("<p style='text-align:center;'>Usuario o contraseña incorrectos. Por favor, verifica tus datos.</p>");
+            toClient.println("<div style='text-align:center; margin-top:20px;'>");
+            toClient.println("    <a href='index.html'><button class='primary' style='width:100%'>Volver al Inicio</button></a>");
             toClient.println("</div>");
-            toClient.println(Utils.footer("Sign In"));
+            toClient.println("</div>");
+            
+            toClient.println(Utils.footer("Error"));
         }
         toClient.close();
     }

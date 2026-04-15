@@ -22,7 +22,7 @@ public class BookingHistoryServlet extends HttpServlet {
 
         res.setContentType("text/html");
         PrintWriter toClient = res.getWriter();
-        toClient.println(Utils.header("My Bookings"));
+        toClient.println(Utils.header("My Bookings", session));
 
         toClient.println("<p style='text-align:center; color:#6b7280;'>" +
                          "Bookings of <b>" + userName + "</b></p>");

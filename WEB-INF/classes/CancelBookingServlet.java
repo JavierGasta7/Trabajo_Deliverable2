@@ -22,7 +22,7 @@ public class CancelBookingServlet extends HttpServlet {
 
         res.setContentType("text/html");
         PrintWriter toClient = res.getWriter();
-        toClient.println(Utils.header("Cancel Booking"));
+        toClient.println(Utils.header("Cancel Booking", session));
 
         String bookingIdStr = req.getParameter("bookingId");
         if (bookingIdStr == null) {

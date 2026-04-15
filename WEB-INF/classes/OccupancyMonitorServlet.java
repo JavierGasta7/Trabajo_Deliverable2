@@ -23,7 +23,7 @@ public class OccupancyMonitorServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Connection conn = null;
 
-        out.println(Utils.header("Occupancy Monitor"));
+        out.println(Utils.header("Occupancy Monitor", session));
 
 
         try {

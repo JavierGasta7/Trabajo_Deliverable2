@@ -5,26 +5,6 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 	
-	<servlet>
-		<servlet-name>RateClassServlet</servlet-name>
-		<servlet-class>RateClassServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>AdminDashboardServlet</servlet-name>
-		<servlet-class>AdminDashboardServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>ClassCatalogueServlet</servlet-name>
-		<servlet-class>ClassCatalogueServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>OccupancyMonitorServlet</servlet-name>
-		<servlet-class>OccupancyMonitorServlet</servlet-class>
-	</servlet>
-
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>LoginServlet</servlet-class>
@@ -33,6 +13,31 @@
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>LogoutServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>AdminDashboardServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>MemberDashboardServlet</servlet-name>
+        <servlet-class>MemberDashboardServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ManagerDashboardServlet</servlet-name>
+        <servlet-class>ManagerDashboardServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ClassCatalogueServlet</servlet-name>
+        <servlet-class>ClassCatalogueServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>OccupancyMonitorServlet</servlet-name>
+        <servlet-class>OccupancyMonitorServlet</servlet-class>
     </servlet>
 
     <servlet>
@@ -55,6 +60,11 @@
         <servlet-class>BookingHistoryServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>RateClassServlet</servlet-name>
+        <servlet-class>RateClassServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -63,6 +73,31 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/AdminDashboardServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>MemberDashboardServlet</servlet-name>
+        <url-pattern>/MemberDashboardServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ManagerDashboardServlet</servlet-name>
+        <url-pattern>/ManagerDashboardServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ClassCatalogueServlet</servlet-name>
+        <url-pattern>/ClassCatalogueServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>OccupancyMonitorServlet</servlet-name>
+        <url-pattern>/OccupancyMonitorServlet</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -84,25 +119,19 @@
         <servlet-name>BookingHistoryServlet</servlet-name>
         <url-pattern>/BookingHistoryServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RateClassServlet</servlet-name>
+        <url-pattern>/RateClassServlet</url-pattern>
+    </servlet-mapping>
 	
-	<servlet-mapping>
-		<servlet-name>OccupancyMonitorServlet</servlet-name>
-		<url-pattern>/OccupancyMonitorServlet</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>RateClassServlet</servlet-name>
-		<url-pattern>/RateClassServlet</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>ClassCatalogueServlet</servlet-name>
-		<url-pattern>/ClassCatalogueServlet</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>AdminDashboardServlet</servlet-name>
-		<url-pattern>/AdminDashboardServlet</url-pattern>
-	</servlet-mapping>
+	<servlet>
+    <servlet-name>InstructorDashboardServlet</servlet-name>
+    <servlet-class>InstructorDashboardServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>InstructorDashboardServlet</servlet-name>
+    <url-pattern>/InstructorDashboardServlet</url-pattern>
+</servlet-mapping>
 
 </web-app>

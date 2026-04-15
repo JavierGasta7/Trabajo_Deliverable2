@@ -1,146 +1,69 @@
 import java.io.*;
-import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.sql.Connection;
 
+@SuppressWarnings("serial")
 public class AdminDashboardServlet extends HttpServlet {
+    Connection connection;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        connection = ConnectionUtils.getConnection(config);
+    }
 
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("userRole") == null ||
-            !"admin".equalsIgnoreCase((String) session.getAttribute("userRole"))) {
-            response.sendRedirect("index.html");
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("text/html;charset=UTF-8");
+		req.setCharacterEncoding("UTF-8");
+        PrintWriter toClient = res.getWriter();
+
+        // 1. Verificación de seguridad: Solo admins
+        HttpSession session = req.getSession(false);
+        String role = (session != null) ? (String) session.getAttribute("userRole") : null;
+
+        if (role == null || !role.equalsIgnoreCase("admin")) {
+            res.sendRedirect("index.html");
             return;
         }
 
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        Connection conn = null;
+        String userName = (String) session.getAttribute("userName");
 
-        out.println(Utils.header("Admin Dashboard, Administration Panel"));
+        // 2. Generación de la vista profesional
+        toClient.println(Utils.header("Panel de Administración", session));
+        toClient.println("<div class='subheader'>Control Global: " + userName + " (Administrador)</div>");
 
+        toClient.println("<div style='max-width: 900px; margin: 20px auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;'>");
 
-        try {
-            conn = ConnectionUtils.getConnection(getServletConfig());
+        // TARJETA 1: Gestión de Usuarios (Aprobaciones)
+        toClient.println("    <div class='card' style='width: 280px;'>");
+        toClient.println("        <div class='title'>Control de Usuarios</div>");
+        toClient.println("        <p>Aprobar nuevos registros o gestionar estados de membresía.</p>");
+        // Aquí puedes poner el enlace al servlet que gestiona usuarios o recargar esta misma página con parámetros
+        toClient.println("        <a href='AdminDashboardServlet?action=manageUsers'><button class='primary' style='width:100%'>Gestionar Usuarios</button></a>");
+        toClient.println("    </div>");
 
-            // ================= METRICS =================
-            int members = getCount(conn, "SELECT COUNT(*) FROM users WHERE role='member'");
-            int instructors = getCount(conn, "SELECT COUNT(*) FROM users WHERE role='instructor'");
-            int classes = getCount(conn, "SELECT COUNT(*) FROM classes");
+        // TARJETA 2: Catálogo Maestro (Trabajo de Ander)
+        toClient.println("    <div class='card' style='width: 280px;'>");
+        toClient.println("        <div class='title'>Catálogo de Clases</div>");
+        toClient.println("        <p>Añadir, editar o cancelar clases del gimnasio.</p>");
+        toClient.println("        <a href='ClassCatalogueServlet'><button class='primary' style='width:100%'>Editar Catálogo</button></a>");
+        toClient.println("    </div>");
 
-            out.println("<div class='card' style='display:flex; gap:20px; flex-wrap:wrap;'>");
+        // TARJETA 3: Monitor de Ocupación
+        toClient.println("    <div class='card' style='width: 280px;'>");
+        toClient.println("        <div class='title'>Métricas en Vivo</div>");
+        toClient.println("        <p>Ver el estado de ocupación de todas las salas.</p>");
+        toClient.println("        <a href='OccupancyMonitorServlet'><button class='secondary' style='width:100%'>Abrir Monitor</button></a>");
+        toClient.println("    </div>");
 
-            out.println(metricBox("Members", members));
-            out.println(metricBox("Instructors", instructors));
-            out.println(metricBox("Classes", classes));
+        toClient.println("</div>");
 
-            out.println("</div>");
+        // Botón de salida
+        toClient.println("<div style='text-align: center; margin-top: 20px;'>");
+        toClient.println("    <a href='LogoutServlet'><button class='secondary' type='button'>Cerrar Sesión</button></a>");
+        toClient.println("</div>");
 
-            // ================= PENDING USERS =================
-            String sql = "SELECT * FROM users WHERE membership_status='pending'";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            out.println("<div class='card'>");
-            out.println("<div class='title'>Pending Approvals</div>");
-
-            boolean hasPending = false;
-
-            while (rs.next()) {
-                hasPending = true;
-
-                int id = rs.getInt("id");
-
-                out.println("<div style='border:1px solid #ddd; padding:10px; margin-bottom:10px;'>");
-
-                out.println("<b>" + rs.getString("full_name") + "</b><br>");
-                out.println(rs.getString("email") + "<br>");
-
-                // APPROVE BUTTON
-                out.println("<form method='post' action='AdminDashboardServlet' style='margin-top:8px;'>");
-                out.println("<input type='hidden' name='action' value='approve'>");
-                out.println("<input type='hidden' name='id' value='" + id + "'>");
-                out.println("<button class='primary'>Approve</button>");
-                out.println("</form>");
-
-                out.println("</div>");
-            }
-
-            if (!hasPending) {
-                out.println("<p>No pending approvals.</p>");
-            }
-
-            out.println("</div>");
-
-            rs.close();
-            ps.close();
-
-        } catch (Exception e) {
-            out.println("<div class='card'><p>Error: " + e.getMessage() + "</p></div>");
-        } finally {
-            ConnectionUtils.close(conn);
-        }
-
-        out.println(Utils.footer(""));
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("userRole") == null ||
-            !"admin".equalsIgnoreCase((String) session.getAttribute("userRole"))) {
-            response.sendRedirect("index.html");
-            return;
-        }
-
-        String action = request.getParameter("action");
-        String idParam = request.getParameter("id");
-
-        Connection conn = null;
-
-        try {
-            conn = ConnectionUtils.getConnection(getServletConfig());
-
-            if ("approve".equals(action)) {
-
-                int id = Integer.parseInt(idParam);
-
-                String sql = "UPDATE users SET membership_status='active' WHERE id=?";
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.setInt(1, id);
-                ps.executeUpdate();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            ConnectionUtils.close(conn);
-        }
-
-        response.sendRedirect("AdminDashboardServlet");
-    }
-
-    // ================= HELPERS =================
-
-    private int getCount(Connection conn, String sql) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        int count = rs.getInt(1);
-        rs.close();
-        ps.close();
-        return count;
-    }
-
-    private String metricBox(String title, int value) {
-        return "<div style='flex:1; min-width:150px; background:#f8f9fa; padding:20px; border-radius:10px; text-align:center;'>"
-            + "<div style='font-size:1.5rem; font-weight:bold;'>" + value + "</div>"
-            + "<div style='color:#6c757d;'>" + title + "</div>"
-            + "</div>";
+        toClient.println(Utils.footer("Admin Panel"));
+        toClient.close();
     }
 }
