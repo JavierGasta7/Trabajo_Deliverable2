@@ -54,72 +54,62 @@
         </div>
     </div>
 </div>
+
+<h2>Funciones Disponibles</h2>
+
+
 <table style="max-width:1000px;">
     <tr>
         <th>Funci&oacute;n</th>
         <th>Autor</th>
         <th>Descripci&oacute;n</th>
-        <th>Datos de prueba recomendados</th>
     </tr>
 
     <tr>
         <td><a href="LoginServlet">LoginServlet</a></td>
         <td>Com&uacute;n</td>
-        <td>Autentica al usuario contra la BD y crea la sesi&oacute;n con los 4 atributos.</td>
-        <td>Usa cualquiera de las cuentas de prueba (ver arriba).</td>
+        <td>Autentica al usuario contra la BD y crea la sesi&oacute;n con los 4 atributos.</td>     
     </tr>
 
     <tr>
         <td><a href="LogoutServlet">LogoutServlet</a></td>
         <td>Com&uacute;n</td>
-        <td>Invalida la sesi&oacute;n y redirige a login.html.</td>
-        <td>Pulsar despu&eacute;s de haber iniciado sesi&oacute;n.</td>
+        <td>Invalida la sesi&oacute;n y redirige a login.html.</td>   
     </tr>
 
     <tr>
         <td><a href="BrowseClassesServlet">BrowseClassesServlet</a></td>
         <td>Marco</td>
         <td>Lista las clases disponibles con filtros por tipo de actividad e instructor. Muestra plazas ocupadas / capacidad.</td>
-        <td>Inicia sesi&oacute;n como ana.garcia. Prueba filtros: actividad = "Yoga", o instructor id = 2 (Carlos Mendez).</td>
+        
     </tr>
 
     <tr>
         <td><a href="BookClassServlet?classId=4">BookClassServlet</a></td>
         <td>Marco</td>
         <td>Reserva una plaza en una clase. Valida: membres&iacute;a activa, no duplicada, plazas disponibles.</td>
-        <td>
-            ana.garcia reservando la clase 4 (Zumba) &mdash; deber&iacute;a funcionar.<br>
-            javier.nunez intentando reservar &mdash; deber&iacute;a fallar (membres&iacute;a inactiva).<br>
-            ana.garcia intentando la clase 1 &mdash; deber&iacute;a fallar (ya reservada).
-        </td>
     </tr>
 
     <tr>
         <td><a href="CancelBookingServlet?bookingId=1">CancelBookingServlet</a></td>
         <td>Marco</td>
         <td>Cancela una reserva existente. Valida que queden m&aacute;s de 2 horas para el inicio. Libera la plaza.</td>
-        <td>
-            ana.garcia cancelando la reserva 1 (Yoga) o la 2 (Spinning).<br>
-            Probar con una reserva de otro usuario &mdash; deber&iacute;a rechazarse.
-        </td>
     </tr>
 
     <tr>
-        <td><a href="BookingHistoryServlet">BookingHistoryServlet</a></td>
-        <td>Marco</td>
-        <td>Historial completo del miembro conectado: reservas confirmadas, completadas y canceladas, con opci&oacute;n de valorar las completadas.</td>
-        <td>ana.garcia (tiene 2 reservas) o laura.torres (tiene 2 reservas).</td>
+        <td><a href="OccupancyMonitorServlet">OccupancyMonitorServlet</a></td>
+        <td>Ander</td>
+        <td>Asegui cambia en el index lo que hace este servlet!!!!!! y ponlo aqui</td>     
     </tr>
+	
+	<tr>
+		<td><a href="AdminDashboardServlet">AdminDashboardServlet</a></td>
+        <td>Ander</td>
+        <td>Asegui cambia en el index lo que hace este servlet!!!!!! y ponlo aqui</td>
+	</tr>
 	
 
 </table>
-<div style="max-width: 800px; margin: 40px auto; padding: 20px; border-top: 1px dashed #ccc; text-align: center;">
-    <h3 style="color: #6b7280; font-size: 14px;">Panel de Evaluación Técnica (Servlets de alumnos)</h3>
-    <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
-        <a href="OccupancyMonitorServlet" class="secondary" style="font-size: 11px; text-decoration: none; padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px;">Ocupación (Ander) PENDIENTE DE CAMBIAR</a>
-        <a href="AdminDashboardServlet" class="secondary" style="font-size: 11px; text-decoration: none; padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px;">Panel Admin (Ander) PENDIENTE DE CAMBIAR</a>
-    </div>
-</div>
 
 </body>
 </html>
