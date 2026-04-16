@@ -141,6 +141,161 @@ public class BookingData {
         return n;
     }
 
+    public static Vector<String[]> getRoster(Connection connection, int classId) {
+        Vector<String[]> vec = new Vector<String[]>();
+        String sql = "SELECT u.full_name, u.email, u.phone, b.booked_at " +
+                     "FROM bookings b, users u " +
+                     "WHERE b.member_id = u.id AND b.class_id = ? AND b.status = 'confirmed' " +
+                     "ORDER BY u.full_name";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, classId);
+            ResultSet result = pstmt.executeQuery();
+            while (result.next()) {
+                vec.addElement(new String[]{
+                    result.getString("full_name"),
+                    result.getString("email"),
+                    result.getString("phone"),
+                    result.getString("booked_at")
+                });
+            }
+            result.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vec;
+    }
+
+    public static int[] getStatsForMember(Connection connection, int memberId) {
+        int confirmed = 0, cancelled = 0;
+        try {
+            PreparedStatement p1 = connection.prepareStatement(
+                "SELECT COUNT(*) AS n FROM bookings WHERE member_id = ? AND status = 'confirmed'");
+            p1.setInt(1, memberId);
+            ResultSet r1 = p1.executeQuery();
+            if (r1.next()) confirmed = r1.getInt("n");
+            r1.close(); p1.close();
+
+            PreparedStatement p2 = connection.prepareStatement(
+                "SELECT COUNT(*) AS n FROM bookings WHERE member_id = ? AND status = 'cancelled'");
+            p2.setInt(1, memberId);
+            ResultSet r2 = p2.executeQuery();
+            if (r2.next()) cancelled = r2.getInt("n");
+            r2.close(); p2.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new int[]{confirmed, cancelled};
+    }
+
+    public static String getFavoriteActivity(Connection connection, int memberId) {
+        String sql = "SELECT c.activity_type, COUNT(*) AS cnt " +
+                     "FROM bookings b, classes c " +
+                     "WHERE b.class_id = c.id AND b.member_id = ? AND b.status = 'confirmed' " +
+                     "GROUP BY c.activity_type " +
+                     "ORDER BY cnt DESC";
+        String fav = null;
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, memberId);
+            ResultSet result = pstmt.executeQuery();
+            if (result.next()) fav = result.getString("activity_type");
+            result.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fav;
+    }
+
+    public static Vector<BookingData> getRateableClasses(Connection connection, int memberId) {
+        Vector<BookingData> vec = new Vector<BookingData>();
+        String sql = "SELECT b.id, b.member_id, b.class_id, b.status, b.booked_at, " +
+                     "c.name, c.activity_type, c.class_date, c.start_time, " +
+                     "u.full_name AS instructor_name " +
+                     "FROM bookings b, classes c, users u " +
+                     "WHERE b.class_id = c.id AND c.instructor_id = u.id " +
+                     "AND b.member_id = ? AND b.status = 'confirmed' " +
+                     "AND c.class_date < Date() " +
+                     "AND b.class_id NOT IN (SELECT class_id FROM ratings WHERE member_id = ?) " +
+                     "ORDER BY c.class_date DESC, c.start_time DESC";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, memberId);
+            pstmt.setInt(2, memberId);
+            ResultSet result = pstmt.executeQuery();
+            while (result.next()) {
+                vec.addElement(new BookingData(
+                    result.getInt("id"),
+                    result.getInt("member_id"),
+                    result.getInt("class_id"),
+                    result.getString("name"),
+                    result.getString("activity_type"),
+                    result.getString("class_date"),
+                    result.getString("start_time"),
+                    result.getString("instructor_name"),
+                    result.getString("status"),
+                    result.getString("booked_at")
+                ));
+            }
+            result.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error in getRateableClasses: " + sql + " Exception: " + e);
+        }
+        return vec;
+    }
+
+    public static boolean canMemberRate(Connection connection, int memberId, int classId) {
+        String sql = "SELECT b.id FROM bookings b, classes c " +
+                     "WHERE b.class_id = c.id AND b.member_id = ? AND b.class_id = ? " +
+                     "AND b.status = 'confirmed' AND c.class_date < Date()";
+        boolean can = false;
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, memberId);
+            pstmt.setInt(2, classId);
+            ResultSet r = pstmt.executeQuery();
+            if (r.next()) can = true;
+            r.close(); pstmt.close();
+        } catch (SQLException e) { e.printStackTrace(); }
+        return can;
+    }
+
+    public static boolean hasRated(Connection connection, int memberId, int classId) {
+        String sql = "SELECT id FROM ratings WHERE member_id = ? AND class_id = ?";
+        boolean has = false;
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, memberId);
+            pstmt.setInt(2, classId);
+            ResultSet r = pstmt.executeQuery();
+            if (r.next()) has = true;
+            r.close(); pstmt.close();
+        } catch (SQLException e) { e.printStackTrace(); }
+        return has;
+    }
+
+    public static int insertRating(Connection connection, int memberId, int classId, int stars, String comment) {
+        String sql = "INSERT INTO ratings (member_id, class_id, stars, comment, created_at) VALUES (?, ?, ?, ?, Now())";
+        int n = 0;
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, memberId);
+            pstmt.setInt(2, classId);
+            pstmt.setInt(3, stars);
+            pstmt.setString(4, comment == null ? "" : comment);
+            n = pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error in insertRating: " + sql + " Exception: " + e);
+        }
+        return n;
+    }
+
     public static int cancelBooking(Connection connection, int bookingId) {
         String sql = "UPDATE bookings SET status = 'cancelled' WHERE id = ?";
         System.out.println("cancelBooking: " + sql);

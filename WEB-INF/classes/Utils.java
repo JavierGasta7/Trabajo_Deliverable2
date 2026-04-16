@@ -28,7 +28,7 @@ public class Utils {
         
 
         str.append("<a href='" + homeLink + "'>Inicio</a>"); 
-        str.append("<a href='LogoutServlet'>Cerrar Sesión</a>");
+        str.append("<a href='LogoutServlet'>Cerrar Sesi\u00f3n</a>");
         str.append("</div>");
         
         str.append("<div class='subheader'>" + title + "</div>");
@@ -38,5 +38,27 @@ public class Utils {
     // Mantén el método footer igual
     public static String footer(String title) {
         return "</body></html>";
+    }
+
+    // Formatea fechas de Access: "yyyy-MM-dd ..." -> "yyyy-MM-dd"
+    public static String formatDate(String s) {
+        if (s == null) return "";
+        if (s.length() >= 10) return s.substring(0, 10);
+        return s;
+    }
+
+    // Formatea horas de Access. Valores t\u00edpicos:
+    //   "1899-12-30 10:00:00.0"  -> "10:00"
+    //   "10:00:00"                -> "10:00"
+    //   "10:00"                   -> "10:00"
+    public static String formatTime(String s) {
+        if (s == null) return "";
+        int colonIdx = s.indexOf(':');
+        if (colonIdx <= 0) return s;
+        int start = colonIdx - 2;
+        if (start < 0) start = 0;
+        int end = start + 5;
+        if (end > s.length()) end = s.length();
+        return s.substring(start, end);
     }
 }

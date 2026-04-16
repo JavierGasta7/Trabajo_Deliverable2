@@ -134,4 +134,94 @@
     <url-pattern>/InstructorDashboardServlet</url-pattern>
 </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SignUpServlet</servlet-name>
+        <servlet-class>SignUpServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignUpServlet</servlet-name>
+        <url-pattern>/SignUpServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EquipmentListServlet</servlet-name>
+        <servlet-class>EquipmentListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EquipmentListServlet</servlet-name>
+        <url-pattern>/EquipmentListServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddEquipmentServlet</servlet-name>
+        <servlet-class>AddEquipmentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddEquipmentServlet</servlet-name>
+        <url-pattern>/AddEquipmentServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditEquipmentServlet</servlet-name>
+        <servlet-class>EditEquipmentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditEquipmentServlet</servlet-name>
+        <url-pattern>/EditEquipmentServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MaintenanceAlertServlet</servlet-name>
+        <servlet-class>MaintenanceAlertServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MaintenanceAlertServlet</servlet-name>
+        <url-pattern>/MaintenanceAlertServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ClassRosterServlet</servlet-name>
+        <servlet-class>ClassRosterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClassRosterServlet</servlet-name>
+        <url-pattern>/ClassRosterServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreateClassServlet</servlet-name>
+        <servlet-class>CreateClassServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateClassServlet</servlet-name>
+        <url-pattern>/CreateClassServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <servlet-class>EditProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <url-pattern>/EditProfileServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PersonalStatsServlet</servlet-name>
+        <servlet-class>PersonalStatsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PersonalStatsServlet</servlet-name>
+        <url-pattern>/PersonalStatsServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ManageUsersServlet</servlet-name>
+        <servlet-class>ManageUsersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ManageUsersServlet</servlet-name>
+        <url-pattern>/ManageUsersServlet</url-pattern>
+    </servlet-mapping>
+
 </web-app>

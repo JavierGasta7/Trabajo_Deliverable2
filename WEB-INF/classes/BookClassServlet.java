@@ -20,7 +20,8 @@ public class BookClassServlet extends HttpServlet {
         String userName  = (String) session.getAttribute("userName");
         String userEmail = (String) session.getAttribute("userEmail");
 
-        res.setContentType("text/html");
+        res.setContentType("text/html;charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
         PrintWriter toClient = res.getWriter();
         toClient.println(Utils.header("Book Class", session));
 

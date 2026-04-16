@@ -40,22 +40,36 @@ public class InstructorDashboardServlet extends HttpServlet {
         // TARJETA 1: Monitor de Ocupación (Trabajo de Ander)
         toClient.println("    <div class='card' style='width: 280px;'>");
         toClient.println("        <div class='title'>Monitor de Salas</div>");
-        toClient.println("        <p>Consulta el aforo en tiempo real y la ocupación de las clases.</p>");
-        toClient.println("        <a href='OccupancyMonitorServlet'><button class='primary' style='width:100%'>Ver Ocupación</button></a>");
+        toClient.println("        <p>Consulta el aforo en tiempo real y la ocupaci\u00f3n de las clases.</p>");
+        toClient.println("        <a href='OccupancyMonitorServlet'><button class='primary' style='width:100%'>Ver Ocupaci\u00f3n</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 2: Catálogo de Clases (Vista/Edición)
         toClient.println("    <div class='card' style='width: 280px;'>");
-        toClient.println("        <div class='title'>Gestión de Clases</div>");
+        toClient.println("        <div class='title'>Gesti\u00f3n de Clases</div>");
         toClient.println("        <p>Revisa el horario y realiza ajustes en las actividades.</p>");
-        toClient.println("        <a href='ClassCatalogueServlet'><button class='primary' style='width:100%'>Ver Catálogo</button></a>");
+        toClient.println("        <a href='ClassCatalogueServlet'><button class='primary' style='width:100%'>Ver Cat\u00e1logo</button></a>");
+        toClient.println("    </div>");
+
+        // TARJETA 3: Inscritos en mis clases (Javier)
+        toClient.println("    <div class='card' style='width: 280px;'>");
+        toClient.println("        <div class='title'>Inscritos en mis clases</div>");
+        toClient.println("        <p>Consulta los miembros apuntados a cada una de tus clases.</p>");
+        toClient.println("        <a href='ClassRosterServlet'><button class='primary' style='width:100%'>Ver Inscritos</button></a>");
+        toClient.println("    </div>");
+
+        // TARJETA 4: Crear clase (Javier)
+        toClient.println("    <div class='card' style='width: 280px;'>");
+        toClient.println("        <div class='title'>Crear clase</div>");
+        toClient.println("        <p>Da de alta una nueva clase con fecha, sala y capacidad.</p>");
+        toClient.println("        <a href='CreateClassServlet'><button class='primary' style='width:100%'>Nueva Clase</button></a>");
         toClient.println("    </div>");
 
         toClient.println("</div>");
 
         // Botón de salida
         toClient.println("<div style='text-align: center; margin-top: 20px;'>");
-        toClient.println("    <a href='LogoutServlet'><button class='secondary' type='button'>Cerrar Sesión</button></a>");
+        toClient.println("    <a href='LogoutServlet'><button class='secondary' type='button'>Cerrar Sesi\u00f3n</button></a>");
         toClient.println("</div>");
 
         toClient.println(Utils.footer("Manager Panel"));

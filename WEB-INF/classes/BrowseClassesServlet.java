@@ -20,7 +20,8 @@ public class BrowseClassesServlet extends HttpServlet {
         String userName = (String) session.getAttribute("userName");
         String userRole = (String) session.getAttribute("userRole");
 
-        res.setContentType("text/html");
+        res.setContentType("text/html;charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
         PrintWriter toClient = res.getWriter();
         toClient.println(Utils.header("Browse Classes", session));
 

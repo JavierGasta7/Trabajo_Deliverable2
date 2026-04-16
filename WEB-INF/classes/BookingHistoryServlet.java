@@ -20,7 +20,8 @@ public class BookingHistoryServlet extends HttpServlet {
         int    userId   = (int)    session.getAttribute("userId");
         String userName = (String) session.getAttribute("userName");
 
-        res.setContentType("text/html");
+        res.setContentType("text/html;charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
         PrintWriter toClient = res.getWriter();
         toClient.println(Utils.header("My Bookings", session));
 

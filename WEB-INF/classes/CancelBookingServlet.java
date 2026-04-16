@@ -20,7 +20,8 @@ public class CancelBookingServlet extends HttpServlet {
         HttpSession session = req.getSession();
         int userId = (int) session.getAttribute("userId");
 
-        res.setContentType("text/html");
+        res.setContentType("text/html;charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
         PrintWriter toClient = res.getWriter();
         toClient.println(Utils.header("Cancel Booking", session));
 

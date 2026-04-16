@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
             
             toClient.println("<div class='card' style='max-width:400px; margin: 40px auto;'>");
             toClient.println("<div class='title' style='color:#dc3545; text-align:center;'>Acceso Denegado</div>");
-            toClient.println("<p style='text-align:center;'>Usuario o contraseña incorrectos. Por favor, verifica tus datos.</p>");
+            toClient.println("<p style='text-align:center;'>Usuario o contrase\u00f1a incorrectos. Por favor, verifica tus datos.</p>");
             toClient.println("<div style='text-align:center; margin-top:20px;'>");
             toClient.println("    <a href='index.html'><button class='primary' style='width:100%'>Volver al Inicio</button></a>");
             toClient.println("</div>");
