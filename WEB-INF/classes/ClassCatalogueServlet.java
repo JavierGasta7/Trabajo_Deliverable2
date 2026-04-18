@@ -184,8 +184,8 @@ public class ClassCatalogueServlet extends HttpServlet {
                 ps.setString(1, name);
                 ps.setString(2, activityType);
                 ps.setString(3, room);
-                ps.setString(4, classDate);
-                ps.setString(5, startTime);
+				ps.setString(4, classDate + " 00:00:00");
+				ps.setString(5, "1899-12-30 " + startTime);
                 ps.setInt(6, duration);
                 ps.setInt(7, capacity);
                 ps.setInt(8, id);

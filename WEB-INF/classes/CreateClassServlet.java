@@ -104,10 +104,12 @@ public class CreateClassServlet extends HttpServlet {
             return;
         }
 
-        if (startTime.length() == 5) startTime += ":00";
+		if (startTime.length() == 5) startTime += ":00";
+			classDate = classDate + " 00:00:00";
+			startTime = "1899-12-30 " + startTime;
 
-        int n = ClassData.insertClass(connection, name.trim(), activityType.trim(), room.trim(),
-                                      classDate, startTime, durationMin, maxCapacity, instructorId);
+			int n = ClassData.insertClass(connection, name.trim(), activityType.trim(), room.trim(),
+                              classDate, startTime, durationMin, maxCapacity, instructorId);
         if (n > 0) {
             out.println(Utils.header("Clase creada", session));
             out.println("<div class='card' style='max-width:480px; margin:40px auto;'>");

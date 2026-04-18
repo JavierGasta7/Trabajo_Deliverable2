@@ -40,11 +40,11 @@ public class ClassData {
                      "c.duration_min, c.max_capacity, c.instructor_id, u.full_name AS instructor_name " +
                      "FROM classes c, users u " +
                      "WHERE c.instructor_id = u.id";
-        if (filterActivity != null && !filterActivity.equals("")) {
-            sql += " AND c.activity_type = '" + filterActivity + "'";
+		if (filterActivity != null && !filterActivity.equals("")) {
+            sql += " AND c.name = '" + filterActivity + "'";
         }
         if (filterInstructor != null && !filterInstructor.equals("")) {
-            sql += " AND c.instructor_id = " + filterInstructor;
+            sql += " AND u.full_name = '" + filterInstructor + "'";
         }
         sql += " ORDER BY c.class_date, c.start_time";
         System.out.println("getAvailableClasses: " + sql);
@@ -193,5 +193,42 @@ public class ClassData {
             System.out.println("Error in countBookings: " + sql + " Exception: " + e);
         }
         return n;
+    }
+	
+	public static Vector<String> getDistinctClassNames(Connection connection) {
+        Vector<String> vec = new Vector<String>();
+        String sql = "SELECT DISTINCT name FROM classes ORDER BY name";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet result = pstmt.executeQuery();
+            while (result.next()) {
+                vec.addElement(result.getString("name"));
+            }
+            result.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error in getDistinctClassNames: " + e);
+        }
+        return vec;
+    }
+
+    public static Vector<String> getDistinctInstructorNames(Connection connection) {
+        Vector<String> vec = new Vector<String>();
+        String sql = "SELECT DISTINCT u.full_name FROM classes c, users u " +
+                     "WHERE c.instructor_id = u.id ORDER BY u.full_name";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet result = pstmt.executeQuery();
+            while (result.next()) {
+                vec.addElement(result.getString("full_name"));
+            }
+            result.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error in getDistinctInstructorNames: " + e);
+        }
+        return vec;
     }
 }

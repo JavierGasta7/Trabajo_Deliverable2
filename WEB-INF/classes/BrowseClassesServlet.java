@@ -29,22 +29,41 @@ public class BrowseClassesServlet extends HttpServlet {
                          "Logged in as <b>" + userName + "</b> (" + userRole + ")</p>");
 
         // Lectura de los filtros
-        String filterActivity = req.getParameter("activity");
-        String filterInstructor = req.getParameter("instructor");
+        String filterClass = req.getParameter("className");
+        String filterInstructor = req.getParameter("instructorName");
 
-        // Formulario de filtros
+        // Cargamos los nombres para los desplegables
+        Vector<String> classNames = ClassData.getDistinctClassNames(connection);
+        Vector<String> instructorNames = ClassData.getDistinctInstructorNames(connection);
+
+        // Formulario de filtros con desplegables
         toClient.println("<form action='BrowseClassesServlet' method='GET' style='text-align:center; margin:20px;'>");
-        toClient.println("Activity: <input type='text' name='activity' value='" +
-                         (filterActivity == null ? "" : filterActivity) +
-                         "' placeholder='Yoga, Spinning, ...' /> ");
-        toClient.println("Instructor id: <input type='text' name='instructor' value='" +
-                         (filterInstructor == null ? "" : filterInstructor) +
-                         "' placeholder='2, 6, ...' /> ");
-        toClient.println("<input type='submit' value='Apply Filters' style='width:auto; padding:8px 16px;' />");
+
+        // Desplegable de nombre de clase
+        toClient.println("Clase: <select name='className' style='padding:6px; margin-right:10px;'>");
+        toClient.println("<option value=''>-- Todas --</option>");
+        for (int i = 0; i < classNames.size(); i++) {
+            String name = classNames.elementAt(i);
+            String selected = (filterClass != null && filterClass.equals(name)) ? " selected" : "";
+            toClient.println("<option value='" + name + "'" + selected + ">" + name + "</option>");
+        }
+        toClient.println("</select>");
+
+        // Desplegable de instructor
+        toClient.println("Instructor: <select name='instructorName' style='padding:6px; margin-right:10px;'>");
+        toClient.println("<option value=''>-- Todos --</option>");
+        for (int i = 0; i < instructorNames.size(); i++) {
+            String name = instructorNames.elementAt(i);
+            String selected = (filterInstructor != null && filterInstructor.equals(name)) ? " selected" : "";
+            toClient.println("<option value='" + name + "'" + selected + ">" + name + "</option>");
+        }
+        toClient.println("</select>");
+
+        toClient.println("<input type='submit' value='Filtrar' style='width:auto; padding:8px 16px;' />");
         toClient.println("</form>");
 
-        // Lista de clases
-        Vector<ClassData> classList = ClassData.getAvailableClasses(connection, filterActivity, filterInstructor);
+        // Lista de clases (reutilizamos el metodo ya existente)
+        Vector<ClassData> classList = ClassData.getAvailableClasses(connection, filterClass, filterInstructor);
 
         toClient.println("<table>");
         toClient.println("<tr><th>Class</th><th>Activity</th><th>Instructor</th><th>Room</th>" +
