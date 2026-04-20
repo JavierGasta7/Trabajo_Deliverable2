@@ -18,6 +18,8 @@ public class RateClassServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         if (!SessionUtils.checkSession(req, res)) return;
 
+        BookingData.completeExpiredBookings(connection);
+
         HttpSession session = req.getSession();
         int userId = (int) session.getAttribute("userId");
 

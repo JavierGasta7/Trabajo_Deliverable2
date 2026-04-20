@@ -16,6 +16,8 @@ public class BookingHistoryServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         if (!SessionUtils.checkSession(req, res)) return;
 
+        BookingData.completeExpiredBookings(connection);
+
         HttpSession session = req.getSession();
         int    userId   = (int)    session.getAttribute("userId");
         String userName = (String) session.getAttribute("userName");
