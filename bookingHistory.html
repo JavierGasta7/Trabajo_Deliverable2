@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>My Bookings</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="menu">
+    <span class="brand">GYMTRACK</span>
+    <a href="MemberDashboardServlet">Inicio</a>
+    <a href="LogoutServlet">Cerrar Sesi&oacute;n</a>
+</div>
+
+<div class="subheader">My Bookings</div>
+
+<div id="results"></div>
+
+<div style="text-align:center; margin:20px;">
+    <a href="browseClasses.html">Browse more classes &rarr;</a>
+</div>
+
+<script>
+function loadHistory() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "BookingHistoryServlet?format=json", true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var data = JSON.parse(xhr.responseText);
+            buildTable(data);
+        }
+    };
+    xhr.send();
+}
+
+function buildTable(data) {
+    var div = document.getElementById("results");
+
+    if (data.length == 0) {
+        div.innerHTML = "<div class='card'><p style='text-align:center;'>You have no bookings yet.</p>" +
+                        "<a href='browseClasses.html'><button class='primary' type='button'>Browse classes</button></a></div>";
+        return;
+    }
+
+    var table = document.createElement("table");
+
+    var thead = document.createElement("tr");
+    var headers = ["Class", "Activity", "Instructor", "Date", "Time", "Status", "Action"];
+    for (var h = 0; h < headers.length; h++) {
+        var th = document.createElement("th");
+        th.innerHTML = headers[h];
+        thead.appendChild(th);
+    }
+    table.appendChild(thead);
+
+    for (var i = 0; i < data.length; i++) {
+        var b = data[i];
+        var tr = document.createElement("tr");
+
+        var action;
+        if (b.status == "confirmed") {
+            action = "<a href='CancelBookingServlet?bookingId=" + b.bookingId + "' onclick=\"return confirm('Are you sure you want to cancel this booking?')\">Cancel</a>";
+        } else if (b.status == "completed") {
+            action = "<a href='RateClassServlet?classId=" + b.classId + "'>Rate &#9733;</a>";
+        } else {
+            action = "&mdash;";
+        }
+
+        var color;
+        if (b.status == "confirmed") color = "#2563eb";
+        else if (b.status == "completed") color = "#10b981";
+        else color = "#9ca3af";
+
+        var cells = [b.className, b.activityType, b.instructorName, b.classDate, b.startTime, b.status, action];
+        for (var j = 0; j < cells.length; j++) {
+            var td = document.createElement("td");
+            td.innerHTML = cells[j];
+            if (j == 5) { td.style.color = color; td.style.fontWeight = "bold"; }
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+
+    div.innerHTML = "";
+    div.appendChild(table);
+}
+
+loadHistory();
+</script>
+
+</body>
+</html>

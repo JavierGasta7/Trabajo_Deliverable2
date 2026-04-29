@@ -22,6 +22,34 @@ public class BookingHistoryServlet extends HttpServlet {
         int    userId   = (int)    session.getAttribute("userId");
         String userName = (String) session.getAttribute("userName");
 
+        String format = req.getParameter("format");
+
+        // Modo JSON para AJAX
+        if ("json".equals(format)) {
+            res.setContentType("application/json;charset=UTF-8");
+            PrintWriter out = res.getWriter();
+            Vector<BookingData> history = BookingData.getHistory(connection, userId);
+            out.print("[");
+            for (int i = 0; i < history.size(); i++) {
+                BookingData b = history.elementAt(i);
+                if (i > 0) out.print(",");
+                out.print("{");
+                out.print("\"bookingId\":" + b.bookingId + ",");
+                out.print("\"classId\":" + b.classId + ",");
+                out.print("\"className\":\"" + b.className + "\",");
+                out.print("\"activityType\":\"" + b.activityType + "\",");
+                out.print("\"instructorName\":\"" + b.instructorName + "\",");
+                out.print("\"classDate\":\"" + Utils.formatDate(b.classDate) + "\",");
+                out.print("\"startTime\":\"" + Utils.formatTime(b.startTime) + "\",");
+                out.print("\"status\":\"" + b.status + "\"");
+                out.print("}");
+            }
+            out.print("]");
+            out.close();
+            return;
+        }
+
+        // Modo HTML normal (igual que antes)
         res.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("UTF-8");
         PrintWriter toClient = res.getWriter();
@@ -54,7 +82,6 @@ public class BookingHistoryServlet extends HttpServlet {
             if ("confirmed".equals(b.status)) {
                 action = "<a href='CancelBookingServlet?bookingId=" + b.bookingId + "'>Cancel</a>";
             } else if ("completed".equals(b.status)) {
-                // El servlet RateClassServlet lo hace Ander (FR7), enlazamos por convencion
                 action = "<a href='RateClassServlet?classId=" + b.classId + "'>Rate &#9733;</a>";
             } else {
                 action = "&mdash;";

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Browse Classes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="menu">
+    <span class="brand">GYMTRACK</span>
+    <a href="MemberDashboardServlet">Inicio</a>
+    <a href="LogoutServlet">Cerrar Sesi&oacute;n</a>
+</div>
+
+<div class="subheader">Browse Classes</div>
+
+<div style="text-align:center; margin:20px;">
+    Clase: <select id="filterClass" onchange="loadClasses()" style="padding:6px; margin-right:10px;">
+        <option value="">-- Todas --</option>
+    </select>
+    Instructor: <select id="filterInstructor" onchange="loadClasses()" style="padding:6px; margin-right:10px;">
+        <option value="">-- Todos --</option>
+    </select>
+</div>
+
+<div id="results"></div>
+
+<div style="text-align:center; margin:20px;">
+    <a href="BookingHistoryServlet">My bookings &rarr;</a>
+</div>
+
+<script>
+function loadClasses() {
+    var className = document.getElementById("filterClass").value;
+    var instructor = document.getElementById("filterInstructor").value;
+    var url = "BrowseClassesServlet?format=json";
+    if (className != "") url += "&className=" + encodeURIComponent(className);
+    if (instructor != "") url += "&instructorName=" + encodeURIComponent(instructor);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var data = JSON.parse(xhr.responseText);
+            buildTable(data);
+        }
+    };
+    xhr.send();
+}
+
+function buildTable(data) {
+    var div = document.getElementById("results");
+    var table = document.createElement("table");
+
+    // Header
+    var thead = document.createElement("tr");
+    var headers = ["Class", "Activity", "Instructor", "Room", "Date", "Time", "Spots", "Action"];
+    for (var h = 0; h < headers.length; h++) {
+        var th = document.createElement("th");
+        th.innerHTML = headers[h];
+        thead.appendChild(th);
+    }
+    table.appendChild(thead);
+
+    // Rows
+    for (var i = 0; i < data.length; i++) {
+        var c = data[i];
+        var tr = document.createElement("tr");
+        var spots = c.bookedCount + "/" + c.maxCapacity;
+        var action;
+        if (c.bookedCount >= c.maxCapacity) {
+            action = "<span style='color:#ef4444;'>Full</span>";
+        } else {
+            action = "<a href='BookClassServlet?classId=" + c.classId + "'>Book &rarr;</a>";
+        }
+        var cells = [c.name, c.activityType, c.instructorName, c.room, c.classDate, c.startTime, spots, action];
+        for (var j = 0; j < cells.length; j++) {
+            var td = document.createElement("td");
+            td.innerHTML = cells[j];
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+
+    div.innerHTML = "";
+    div.appendChild(table);
+}
+
+function loadFilters() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "BrowseClassesServlet?format=filters", true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var data = JSON.parse(xhr.responseText);
+            var selClass = document.getElementById("filterClass");
+            for (var i = 0; i < data.classNames.length; i++) {
+                var opt = document.createElement("option");
+                opt.value = data.classNames[i];
+                opt.innerHTML = data.classNames[i];
+                selClass.appendChild(opt);
+            }
+            var selInst = document.getElementById("filterInstructor");
+            for (var i = 0; i < data.instructorNames.length; i++) {
+                var opt = document.createElement("option");
+                opt.value = data.instructorNames[i];
+                opt.innerHTML = data.instructorNames[i];
+                selInst.appendChild(opt);
+            }
+        }
+    };
+    xhr.send();
+}
+
+// Al cargar la pagina, cargamos filtros y clases
+loadFilters();
+loadClasses();
+</script>
+
+</body>
+</html>
