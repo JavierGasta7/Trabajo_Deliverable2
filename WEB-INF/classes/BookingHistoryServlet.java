@@ -19,96 +19,28 @@ public class BookingHistoryServlet extends HttpServlet {
         BookingData.completeExpiredBookings(connection);
 
         HttpSession session = req.getSession();
-        int    userId   = (int)    session.getAttribute("userId");
-        String userName = (String) session.getAttribute("userName");
+        int userId = (int) session.getAttribute("userId");
 
-        String format = req.getParameter("format");
-
-        // Modo JSON para AJAX
-        if ("json".equals(format)) {
-            res.setContentType("application/json;charset=UTF-8");
-            PrintWriter out = res.getWriter();
-            Vector<BookingData> history = BookingData.getHistory(connection, userId);
-            out.print("[");
-            for (int i = 0; i < history.size(); i++) {
-                BookingData b = history.elementAt(i);
-                if (i > 0) out.print(",");
-                out.print("{");
-                out.print("\"bookingId\":" + b.bookingId + ",");
-                out.print("\"classId\":" + b.classId + ",");
-                out.print("\"className\":\"" + b.className + "\",");
-                out.print("\"activityType\":\"" + b.activityType + "\",");
-                out.print("\"instructorName\":\"" + b.instructorName + "\",");
-                out.print("\"classDate\":\"" + Utils.formatDate(b.classDate) + "\",");
-                out.print("\"startTime\":\"" + Utils.formatTime(b.startTime) + "\",");
-                out.print("\"status\":\"" + b.status + "\"");
-                out.print("}");
-            }
-            out.print("]");
-            out.close();
-            return;
-        }
-
-        // Modo HTML normal (igual que antes)
-        res.setContentType("text/html;charset=UTF-8");
-        req.setCharacterEncoding("UTF-8");
-        PrintWriter toClient = res.getWriter();
-        toClient.println(Utils.header("My Bookings", session));
-
-        toClient.println("<p style='text-align:center; color:#6b7280;'>" +
-                         "Bookings of <b>" + userName + "</b></p>");
+        res.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = res.getWriter();
 
         Vector<BookingData> history = BookingData.getHistory(connection, userId);
-
-        if (history.size() == 0) {
-            toClient.println("<div class='card'>");
-            toClient.println("<p style='text-align:center;'>You have no bookings yet.</p>");
-            toClient.println("<a href='BrowseClassesServlet'><button class='primary' type='button'>Browse classes</button></a>");
-            toClient.println("</div>");
-            toClient.println(Utils.footer("My Bookings"));
-            toClient.close();
-            return;
-        }
-
-        toClient.println("<table>");
-        toClient.println("<tr><th>Class</th><th>Activity</th><th>Instructor</th>" +
-                         "<th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr>");
+        out.print("[");
         for (int i = 0; i < history.size(); i++) {
             BookingData b = history.elementAt(i);
-            String date = b.classDate.length() >= 10 ? b.classDate.substring(0, 10) : b.classDate;
-            String time = b.startTime.length() >= 19 ? b.startTime.substring(11, 19) : b.startTime;
-
-            String action;
-            if ("confirmed".equals(b.status)) {
-                action = "<a href='CancelBookingServlet?bookingId=" + b.bookingId + "'>Cancel</a>";
-            } else if ("completed".equals(b.status)) {
-                action = "<a href='RateClassServlet?classId=" + b.classId + "'>Rate &#9733;</a>";
-            } else {
-                action = "&mdash;";
-            }
-
-            String color;
-            if ("confirmed".equals(b.status)) color = "#2563eb";
-            else if ("completed".equals(b.status)) color = "#10b981";
-            else color = "#9ca3af";
-
-            toClient.println("<tr>");
-            toClient.println("<td>" + b.className + "</td>");
-            toClient.println("<td>" + b.activityType + "</td>");
-            toClient.println("<td>" + b.instructorName + "</td>");
-            toClient.println("<td>" + date + "</td>");
-            toClient.println("<td>" + time + "</td>");
-            toClient.println("<td style='color:" + color + "; font-weight:bold;'>" + b.status + "</td>");
-            toClient.println("<td>" + action + "</td>");
-            toClient.println("</tr>");
+            if (i > 0) out.print(",");
+            out.print("{");
+            out.print("\"bookingId\":" + b.bookingId + ",");
+            out.print("\"classId\":" + b.classId + ",");
+            out.print("\"className\":\"" + b.className + "\",");
+            out.print("\"activityType\":\"" + b.activityType + "\",");
+            out.print("\"instructorName\":\"" + b.instructorName + "\",");
+            out.print("\"classDate\":\"" + Utils.formatDate(b.classDate) + "\",");
+            out.print("\"startTime\":\"" + Utils.formatTime(b.startTime) + "\",");
+            out.print("\"status\":\"" + b.status + "\"");
+            out.print("}");
         }
-        toClient.println("</table>");
-
-        toClient.println("<div style='text-align:center; margin:20px;'>");
-        toClient.println("<a href='BrowseClassesServlet'>Browse more classes &rarr;</a>");
-        toClient.println("</div>");
-
-        toClient.println(Utils.footer("My Bookings"));
-        toClient.close();
+        out.print("]");
+        out.close();
     }
 }

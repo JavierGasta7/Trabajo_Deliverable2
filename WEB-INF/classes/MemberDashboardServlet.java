@@ -42,14 +42,14 @@ public class MemberDashboardServlet extends HttpServlet {
         toClient.println("    <div class='card' style='width: 250px;'>");
         toClient.println("        <div class='title'>Reservar Clase</div>");
         toClient.println("        <p>Consulta los horarios disponibles y ap\u00fantate.</p>");
-        toClient.println("        <a href='BrowseClassesServlet'><button class='primary' style='width:100%'>Ver Clases</button></a>");
+        toClient.println("        <a href='browseClasses.html'><button class='primary' style='width:100%'>Ver Clases</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 2: Mis Reservas (Trabajo de Marco)
         toClient.println("    <div class='card' style='width: 250px;'>");
         toClient.println("        <div class='title'>Mi Historial</div>");
         toClient.println("        <p>Revisa tus clases programadas o cancela una reserva.</p>");
-        toClient.println("        <a href='BookingHistoryServlet'><button class='primary' style='width:100%'>Ver Mis Citas</button></a>");
+        toClient.println("        <a href='bookingHistory.html'><button class='primary' style='width:100%'>Ver Mis Citas</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 3: Valorar (Trabajo de Ander/Compañeros)

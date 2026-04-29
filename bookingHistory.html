@@ -24,7 +24,7 @@
 <script>
 function loadHistory() {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "BookingHistoryServlet?format=json", true);
+    xhr.open("GET", "BookingHistoryServlet", true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var data = JSON.parse(xhr.responseText);

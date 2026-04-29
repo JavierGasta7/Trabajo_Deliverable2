@@ -80,7 +80,7 @@ public class PersonalStatsServlet extends HttpServlet {
         out.println("</div>");
 
         out.println("<div style='text-align:center; margin-top:30px;'>");
-        out.println("<a href='BrowseClassesServlet'><button class='primary' type='button' style='width:auto; padding:10px 20px;'>Reservar m\u00e1s clases</button></a>");
+        out.println("<a href='browseClasses.html'><button class='primary' type='button' style='width:auto; padding:10px 20px;'>Reservar m\u00e1s clases</button></a>");
         out.println("<a href='MemberDashboardServlet'><button class='secondary' type='button' style='width:auto; padding:10px 20px; margin-left:10px;'>Volver al panel</button></a>");
         out.println("</div>");
 

@@ -29,7 +29,7 @@ public class CancelBookingServlet extends HttpServlet {
         if (bookingIdStr == null) {
             toClient.println("<div class='card'>");
             toClient.println("<div class='error'>Missing bookingId parameter.</div>");
-            toClient.println("<a href='BookingHistoryServlet'><button class='primary' type='button'>Back to my bookings</button></a>");
+            toClient.println("<a href='bookingHistory.html'><button class='primary' type='button'>Back to my bookings</button></a>");
             toClient.println("</div>");
             toClient.println(Utils.footer("Cancel Booking"));
             toClient.close();
@@ -42,7 +42,7 @@ public class CancelBookingServlet extends HttpServlet {
         if (b == null) {
             toClient.println("<div class='card'>");
             toClient.println("<div class='error'>Booking not found (id=" + bookingId + ")</div>");
-            toClient.println("<a href='BookingHistoryServlet'><button class='primary' type='button'>Back to my bookings</button></a>");
+            toClient.println("<a href='bookingHistory.html'><button class='primary' type='button'>Back to my bookings</button></a>");
             toClient.println("</div>");
             toClient.println(Utils.footer("Cancel Booking"));
             toClient.close();
@@ -51,7 +51,7 @@ public class CancelBookingServlet extends HttpServlet {
         if (b.memberId != userId) {
             toClient.println("<div class='card'>");
             toClient.println("<div class='error'>You can only cancel your own bookings.</div>");
-            toClient.println("<a href='BookingHistoryServlet'><button class='primary' type='button'>Back to my bookings</button></a>");
+            toClient.println("<a href='bookingHistory.html'><button class='primary' type='button'>Back to my bookings</button></a>");
             toClient.println("</div>");
             toClient.println(Utils.footer("Cancel Booking"));
             toClient.close();
@@ -62,7 +62,7 @@ public class CancelBookingServlet extends HttpServlet {
         if ("cancelled".equals(b.status)) {
             toClient.println("<div class='card'>");
             toClient.println("<div class='error'>This booking is already cancelled.</div>");
-            toClient.println("<a href='BookingHistoryServlet'><button class='primary' type='button'>Back to my bookings</button></a>");
+            toClient.println("<a href='bookingHistory.html'><button class='primary' type='button'>Back to my bookings</button></a>");
             toClient.println("</div>");
             toClient.println(Utils.footer("Cancel Booking"));
             toClient.close();
@@ -88,7 +88,7 @@ public class CancelBookingServlet extends HttpServlet {
                 toClient.println("<div class='card'>");
                 toClient.println("<div class='error'>Cancel deadline passed. You must cancel at least 2 hours before the class starts.</div>");
                 toClient.println("<p>Class: <b>" + b.className + "</b> on " + dateOnly + " at " + timeOnly + "</p>");
-                toClient.println("<a href='BookingHistoryServlet'><button class='primary' type='button'>Back to my bookings</button></a>");
+                toClient.println("<a href='bookingHistory.html'><button class='primary' type='button'>Back to my bookings</button></a>");
                 toClient.println("</div>");
                 toClient.println(Utils.footer("Cancel Booking"));
                 toClient.close();
@@ -106,12 +106,12 @@ public class CancelBookingServlet extends HttpServlet {
             toClient.println("<div class='success'>Booking cancelled. The spot has been released.</div>");
             toClient.println("<p><b>Class:</b> " + b.className + "</p>");
             toClient.println("<p><b>Date:</b> " + b.classDate.substring(0, 10) + " " + b.startTime.substring(11, 19) + "</p>");
-            toClient.println("<a href='BookingHistoryServlet'><button class='primary' type='button'>Back to my bookings</button></a>");
+            toClient.println("<a href='bookingHistory.html'><button class='primary' type='button'>Back to my bookings</button></a>");
             toClient.println("</div>");
         } else {
             toClient.println("<div class='card'>");
             toClient.println("<div class='error'>Could not cancel the booking. Try again later.</div>");
-            toClient.println("<a href='BookingHistoryServlet'><button class='primary' type='button'>Back to my bookings</button></a>");
+            toClient.println("<a href='bookingHistory.html'><button class='primary' type='button'>Back to my bookings</button></a>");
             toClient.println("</div>");
         }
 

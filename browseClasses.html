@@ -27,16 +27,20 @@
 <div id="results"></div>
 
 <div style="text-align:center; margin:20px;">
-    <a href="BookingHistoryServlet">My bookings &rarr;</a>
+    <a href="bookingHistory.html">My bookings &rarr;</a>
 </div>
 
 <script>
 function loadClasses() {
     var className = document.getElementById("filterClass").value;
     var instructor = document.getElementById("filterInstructor").value;
-    var url = "BrowseClassesServlet?format=json";
-    if (className != "") url += "&className=" + encodeURIComponent(className);
-    if (instructor != "") url += "&instructorName=" + encodeURIComponent(instructor);
+    var url = "BrowseClassesServlet";
+    if (className != "" || instructor != "") {
+        url += "?";
+        if (className != "") url += "className=" + encodeURIComponent(className);
+        if (className != "" && instructor != "") url += "&";
+        if (instructor != "") url += "instructorName=" + encodeURIComponent(instructor);
+    }
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -53,7 +57,6 @@ function buildTable(data) {
     var div = document.getElementById("results");
     var table = document.createElement("table");
 
-    // Header
     var thead = document.createElement("tr");
     var headers = ["Class", "Activity", "Instructor", "Room", "Date", "Time", "Spots", "Action"];
     for (var h = 0; h < headers.length; h++) {
@@ -63,7 +66,6 @@ function buildTable(data) {
     }
     table.appendChild(thead);
 
-    // Rows
     for (var i = 0; i < data.length; i++) {
         var c = data[i];
         var tr = document.createElement("tr");
@@ -89,7 +91,7 @@ function buildTable(data) {
 
 function loadFilters() {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "BrowseClassesServlet?format=filters", true);
+    xhr.open("GET", "BrowseClassesServlet?type=filters", true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var data = JSON.parse(xhr.responseText);
@@ -112,7 +114,6 @@ function loadFilters() {
     xhr.send();
 }
 
-// Al cargar la pagina, cargamos filtros y clases
 loadFilters();
 loadClasses();
 </script>
