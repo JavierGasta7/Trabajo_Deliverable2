@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 
         if (user != null) {
             HttpSession session = req.getSession(true);
-            session.setAttribute("userId", new Integer(user.userId));
+            session.setAttribute("userId", Integer.valueOf(user.userId));
             session.setAttribute("userRole", user.role);
             session.setAttribute("userEmail", user.email);
             session.setAttribute("userName", user.fullName);

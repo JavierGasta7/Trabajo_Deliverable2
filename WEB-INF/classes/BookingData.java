@@ -216,7 +216,7 @@ public class BookingData {
                      "u.full_name AS instructor_name " +
                      "FROM bookings b, classes c, users u " +
                      "WHERE b.class_id = c.id AND c.instructor_id = u.id " +
-                     "AND b.member_id = ? AND b.status = 'completed' " +
+                     "AND b.member_id = ? AND b.status = 'confirmed' " +
                      "AND c.class_date < Date() " +
                      "AND b.class_id NOT IN (SELECT class_id FROM ratings WHERE member_id = ?) " +
                      "ORDER BY c.class_date DESC, c.start_time DESC";
@@ -251,7 +251,7 @@ public class BookingData {
     public static boolean canMemberRate(Connection connection, int memberId, int classId) {
         String sql = "SELECT b.id FROM bookings b, classes c " +
                      "WHERE b.class_id = c.id AND b.member_id = ? AND b.class_id = ? " +
-                     "AND b.status = 'completed' AND c.class_date < Date()";
+                     "AND b.status = 'confirmed' AND c.class_date < Date()";
         boolean can = false;
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -294,6 +294,24 @@ public class BookingData {
             System.out.println("Error in insertRating: " + sql + " Exception: " + e);
         }
         return n;
+    }
+
+    public static double getAverageStars(Connection connection, int classId) {
+        String sql = "SELECT AVG(stars) AS avgStars FROM ratings WHERE class_id = ?";
+        double avg = 0.0;
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, classId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                avg = rs.getDouble("avgStars");
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            System.out.println("Error in getAverageStars: " + sql + " Exception: " + e);
+        }
+        return avg;
     }
 
     public static void completeExpiredBookings(Connection connection) {

@@ -57,7 +57,7 @@ public class EditEquipmentServlet extends HttpServlet {
         out.println(Utils.header("Editar equipo", session));
         out.println("<div class='card' style='max-width:560px; margin:30px auto;'>");
         out.println("<div class='title'>Editar equipo #" + e.equipmentId + "</div>");
-        out.println("<form method='post' action='EditEquipmentServlet'>");
+        out.println("<form method='post' action='EditEquipmentServlet' onsubmit='return validarEquipo(this);'>");
         out.println("<input type='hidden' name='id' value='" + e.equipmentId + "'>");
         out.println("<label>Nombre</label>");
         out.println("<input type='text' name='name' value='" + attr(e.name) + "' required>");
@@ -70,7 +70,7 @@ public class EditEquipmentServlet extends HttpServlet {
         out.println("<label>Sala</label>");
         out.println("<input type='text' name='room' value='" + attr(e.room) + "'>");
         out.println("<label>Estado</label>");
-        out.println("<select name='status' required>");
+        out.println("<select name='status' required onchange='avisoEstadoBroken(this);'>");
         writeOption(out, "available",   e.status);
         writeOption(out, "in_use",      e.status);
         writeOption(out, "maintenance", e.status);
@@ -79,9 +79,10 @@ public class EditEquipmentServlet extends HttpServlet {
         out.println("<label>\u00daltima revisi\u00f3n</label>");
         String lm = (e.lastMaintenance != null && e.lastMaintenance.length() >= 10) ? e.lastMaintenance.substring(0, 10) : "";
         out.println("<input type='date' name='lastMaintenance' value='" + lm + "'>");
-        out.println("<label>Notas</label>");
-        out.println("<input type='text' name='notes' value='" + attr(e.notes) + "'>");
+        out.println("<label>Notas <span id='notasCount' style='font-size:11px; color:#6b7280;'>" + (e.notes==null?0:e.notes.length()) + "/200</span></label>");
+        out.println("<input type='text' name='notes' maxlength='200' value='" + attr(e.notes) + "' oninput='contarNotas(this,\"notasCount\");'>");
         out.println("<input type='submit' value='Guardar cambios'>");
+        out.println("<button type='button' class='secondary' onclick='marcarReparadoHoy()' style='margin-top:8px;'>Marcar reparado hoy</button>");
         out.println("</form>");
         out.println("<div style='margin-top:15px; text-align:center;'>");
         out.println("<a href='EquipmentListServlet'>Cancelar</a>");

@@ -113,8 +113,8 @@ public class RateClassServlet extends HttpServlet {
         }
         out.println("</div>");
 
-        out.println("<label>Comentario (opcional)</label>");
-        out.println("<textarea name='comment' rows='4' style='width:100%;' maxlength='500' placeholder='Cu\u00e9ntanos qu\u00e9 te pareci\u00f3'></textarea>");
+        out.println("<label>Comentario (opcional) <span id='comentCount' style='font-size:11px; color:#6b7280;'>0/500</span></label>");
+        out.println("<textarea name='comment' rows='4' style='width:100%;' maxlength='500' placeholder='Cu\u00e9ntanos qu\u00e9 te pareci\u00f3' oninput='contarComentario(this,\"comentCount\")'></textarea>");
 
         out.println("<input type='submit' value='Enviar valoraci\u00f3n'>");
         out.println("</form>");
@@ -178,11 +178,13 @@ public class RateClassServlet extends HttpServlet {
 
         int n = BookingData.insertRating(connection, userId, classId, stars, comment);
         if (n > 0) {
+            double avg = BookingData.getAverageStars(connection, classId);
             out.println("<div class='card' style='max-width:480px; margin:40px auto;'>");
             out.println("<div class='success'>\u00a1Gracias por tu valoraci\u00f3n!</div>");
             out.println("<p style='text-align:center; font-size:28px;'>");
             for (int s = 1; s <= 5; s++) out.print(s <= stars ? "\u2605" : "\u2606");
             out.println("</p>");
+            out.println("<p style='text-align:center; color:#6b7280;'>Media de la clase: <b>" + String.format("%.2f", avg) + "</b> / 5</p>");
             out.println("<a href='RateClassServlet'><button class='primary' type='button'>Valorar otra clase</button></a>");
             out.println("<a href='MemberDashboardServlet'><button class='secondary' type='button'>Volver al panel</button></a>");
             out.println("</div>");

@@ -42,7 +42,7 @@ public class AddEquipmentServlet extends HttpServlet {
         out.println("<label>Sala</label>");
         out.println("<input type='text' name='room'>");
         out.println("<label>Estado</label>");
-        out.println("<select name='status' required>");
+        out.println("<select name='status' required onchange='avisoEstadoBroken(this);'>");
         out.println("<option value='available'>available</option>");
         out.println("<option value='in_use'>in_use</option>");
         out.println("<option value='maintenance'>maintenance</option>");
@@ -52,8 +52,8 @@ public class AddEquipmentServlet extends HttpServlet {
         out.println("<input type='date' name='purchasedAt'>");
         out.println("<label>\u00daltima revisi\u00f3n</label>");
         out.println("<input type='date' name='lastMaintenance'>");
-        out.println("<label>Notas</label>");
-        out.println("<input type='text' name='notes'>");
+        out.println("<label>Notas <span id='notasCount' style='font-size:11px; color:#6b7280;'>0/200</span></label>");
+        out.println("<input type='text' name='notes' maxlength='200' oninput='contarNotas(this,\"notasCount\");'>");
         out.println("<input type='submit' value='Crear equipo'>");
         out.println("</form>");
         out.println("<div style='margin-top:15px; text-align:center;'>");
@@ -90,9 +90,25 @@ public class AddEquipmentServlet extends HttpServlet {
             || type == null || type.trim().isEmpty()
             || status == null || status.trim().isEmpty()) {
             out.println(Utils.header("Error", session));
-            out.println("<div class='card' style='max-width:480px; margin:40px auto;'>");
+            out.println("<div class='card' style='max-width:560px; margin:40px auto;'>");
             out.println("<div class='error'>Nombre, tipo y estado son obligatorios.</div>");
-            out.println("<a href='AddEquipmentServlet'><button class='primary' type='button'>Volver</button></a>");
+            out.println("<form method='post' action='AddEquipmentServlet'>");
+            out.println("<label>Nombre</label>");
+            out.println("<input type='text' name='name' value='" + attr(name) + "' required>");
+            out.println("<label>Tipo</label>");
+            out.println("<input type='text' name='type' value='" + attr(type) + "' required>");
+            out.println("<label>Sala</label>");
+            out.println("<input type='text' name='room' value='" + attr(room) + "'>");
+            out.println("<label>Estado</label>");
+            out.println("<input type='text' name='status' value='" + attr(status) + "' required>");
+            out.println("<label>Fecha de compra</label>");
+            out.println("<input type='date' name='purchasedAt' value='" + attr(purchasedAt) + "'>");
+            out.println("<label>Última revisión</label>");
+            out.println("<input type='date' name='lastMaintenance' value='" + attr(lastMaintenance) + "'>");
+            out.println("<label>Notas</label>");
+            out.println("<input type='text' name='notes' maxlength='200' value='" + attr(notes) + "'>");
+            out.println("<input type='submit' value='Crear equipo'>");
+            out.println("</form>");
             out.println("</div>");
             out.println(Utils.footer("Error"));
             out.close();
@@ -119,5 +135,10 @@ public class AddEquipmentServlet extends HttpServlet {
             out.println(Utils.footer("Error"));
             out.close();
         }
+    }
+
+    private String attr(String s) {
+        if (s == null) return "";
+        return s.replace("&", "&amp;").replace("'", "&#x27;").replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;");
     }
 }

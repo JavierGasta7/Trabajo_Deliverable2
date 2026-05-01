@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Gestionar usuarios (AJAX)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="menu">
+    <span class="brand">GYMTRACK</span>
+    <a href="AdminDashboardServlet">Inicio</a>
+    <a href="LogoutServlet">Cerrar Sesi&oacute;n</a>
+</div>
+
+<div class="subheader">Gestionar usuarios (AJAX)</div>
+
+<div class="card" style="max-width:1100px; margin:20px auto;">
+    <div class="title">Usuarios</div>
+    <div class="subtitle">Listado cargado v&iacute;a AJAX desde ManageUsersServlet</div>
+
+    <div style="text-align:center; margin:15px;">
+        Rol:
+        <select id="roleFilter" onchange="loadUsers()" style="padding:6px; margin-right:10px;">
+            <option value="">Todos</option>
+            <option value="admin">Admin</option>
+            <option value="instructor">Instructor</option>
+            <option value="member">Miembro</option>
+        </select>
+        Estado:
+        <select id="statusFilter" onchange="loadUsers()" style="padding:6px; margin-right:10px;">
+            <option value="">Todos</option>
+            <option value="active">Activo</option>
+            <option value="inactive">Inactivo</option>
+        </select>
+        <input type="text" id="search" placeholder="Buscar por nombre o email" oninput="loadUsers()" style="padding:6px;">
+    </div>
+
+    <div id="results"></div>
+</div>
+
+<script>
+function loadUsers() {
+    var r = document.getElementById("roleFilter").value;
+    var s = document.getElementById("statusFilter").value;
+    var q = document.getElementById("search").value;
+    var url = "ManageUsersServlet?format=json";
+    if (r !== "") url += "&roleFilter=" + encodeURIComponent(r);
+    if (s !== "") url += "&statusFilter=" + encodeURIComponent(s);
+    if (q !== "") url += "&search=" + encodeURIComponent(q);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            buildTable(JSON.parse(xhr.responseText));
+        }
+    };
+    xhr.send();
+}
+
+function buildTable(data) {
+    var div = document.getElementById("results");
+    var html = "<table><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th></tr>";
+    if (data.length === 0) {
+        html += "<tr><td colspan='5' style='text-align:center; color:#6b7280;'>Sin resultados.</td></tr>";
+    }
+    for (var i = 0; i < data.length; i++) {
+        var u = data[i];
+        html += "<tr>";
+        html += "<td>" + u.userId + "</td>";
+        html += "<td>" + u.fullName + "</td>";
+        html += "<td>" + u.email + "</td>";
+        html += "<td>" + roleBadge(u.role) + "</td>";
+        html += "<td>" + statusBadge(u.membershipStatus) + "</td>";
+        html += "</tr>";
+    }
+    html += "</table>";
+    div.innerHTML = html;
+}
+
+function roleBadge(r) {
+    var c = "#6b7280";
+    if (r === "admin")           c = "#7c3aed";
+    else if (r === "instructor") c = "#2563eb";
+    else if (r === "member")     c = "#10b981";
+    return "<span style='background:" + c + "; color:white; padding:3px 8px; border-radius:4px; font-size:11px;'>" + r + "</span>";
+}
+
+function statusBadge(s) {
+    var active = (s === "active");
+    var c = active ? "#10b981" : "#ef4444";
+    var t = active ? "Activo" : "Inactivo";
+    return "<span style='background:" + c + "; color:white; padding:3px 8px; border-radius:4px; font-size:11px;'>" + t + "</span>";
+}
+
+loadUsers();
+</script>
+
+</body>
+</html>

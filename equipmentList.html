@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Equipamiento (AJAX)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="menu">
+    <span class="brand">GYMTRACK</span>
+    <a href="AdminDashboardServlet">Inicio</a>
+    <a href="LogoutServlet">Cerrar Sesi&oacute;n</a>
+</div>
+
+<div class="subheader">Equipamiento (AJAX)</div>
+
+<div class="card" style="max-width:1100px; margin:20px auto;">
+    <div class="title">Listado de equipamiento</div>
+
+    <div style="text-align:center; margin:15px;">
+        Tipo:
+        <select id="filterType" onchange="loadEquipment()" style="padding:6px; margin-right:10px;">
+            <option value="">Todos</option>
+            <option value="cardio">cardio</option>
+            <option value="fuerza">fuerza</option>
+            <option value="libre">libre</option>
+        </select>
+        Estado:
+        <select id="filterStatus" onchange="loadEquipment()" style="padding:6px;">
+            <option value="">Todos</option>
+            <option value="available">available</option>
+            <option value="in_use">in_use</option>
+            <option value="maintenance">maintenance</option>
+            <option value="broken">broken</option>
+        </select>
+    </div>
+
+    <div id="results"></div>
+</div>
+
+<script>
+function loadEquipment() {
+    var t = document.getElementById("filterType").value;
+    var s = document.getElementById("filterStatus").value;
+    var url = "EquipmentListServlet?format=json";
+    if (t !== "") url += "&type=" + encodeURIComponent(t);
+    if (s !== "") url += "&status=" + encodeURIComponent(s);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var data = JSON.parse(xhr.responseText);
+            buildTable(data);
+        }
+    };
+    xhr.send();
+}
+
+function buildTable(data) {
+    var div = document.getElementById("results");
+    var headers = ["Nombre", "Tipo", "Sala", "Estado", "Comprado", "Última revisión", "Notas"];
+    var html = "<table><tr>";
+    for (var h = 0; h < headers.length; h++) html += "<th>" + headers[h] + "</th>";
+    html += "</tr>";
+
+    if (data.length === 0) {
+        html += "<tr><td colspan='" + headers.length + "' style='text-align:center; color:#6b7280;'>Sin resultados.</td></tr>";
+    }
+    for (var i = 0; i < data.length; i++) {
+        var e = data[i];
+        html += "<tr>";
+        html += "<td>" + e.name + "</td>";
+        html += "<td>" + e.type + "</td>";
+        html += "<td>" + e.room + "</td>";
+        html += "<td>" + badge(e.status) + "</td>";
+        html += "<td>" + e.purchasedAt + "</td>";
+        html += "<td>" + e.lastMaintenance + "</td>";
+        html += "<td>" + e.notes + "</td>";
+        html += "</tr>";
+    }
+    html += "</table>";
+    div.innerHTML = html;
+}
+
+function badge(s) {
+    var c = "#6b7280";
+    if (s === "available")        c = "#10b981";
+    else if (s === "in_use")      c = "#2563eb";
+    else if (s === "maintenance") c = "#f59e0b";
+    else if (s === "broken")      c = "#ef4444";
+    return "<span style='background:" + c + "; color:white; padding:3px 10px; border-radius:12px; font-size:12px;'>" + s + "</span>";
+}
+
+loadEquipment();
+</script>
+
+</body>
+</html>

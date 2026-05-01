@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Alertas de mantenimiento (AJAX)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="menu">
+    <span class="brand">GYMTRACK</span>
+    <a href="AdminDashboardServlet">Inicio</a>
+    <a href="LogoutServlet">Cerrar Sesi&oacute;n</a>
+</div>
+
+<div class="subheader">Alertas de mantenimiento (AJAX)</div>
+
+<div class="card" style="max-width:1000px; margin:20px auto;">
+    <div class="title">Panel de alertas</div>
+    <div class="subtitle">Datos cargados v&iacute;a AJAX desde MaintenanceAlertServlet</div>
+
+    <div id="counters" style="display:flex; gap:15px; justify-content:center; margin:20px 0;"></div>
+    <div id="sections"></div>
+</div>
+
+<script>
+function loadAlerts() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "MaintenanceAlertServlet?format=json", true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var data = JSON.parse(xhr.responseText);
+            render(data);
+        }
+    };
+    xhr.send();
+}
+
+function render(data) {
+    var c = data.counts;
+    document.getElementById("counters").innerHTML =
+        badge("Críticos", c.critical, "#ef4444") +
+        badge("Altos",    c.high,     "#f59e0b") +
+        badge("Medios",   c.medium,   "#eab308");
+
+    var html = "";
+    html += section("Críticos (rotos)",            data.critical, "#ef4444", "#fef2f2");
+    html += section("Altos (>6 meses)",            data.high,     "#f59e0b", "#fffbeb");
+    html += section("Medios (en mantenimiento)",   data.medium,   "#eab308", "#fefce8");
+
+    if (c.critical === 0 && c.high === 0 && c.medium === 0) {
+        html = "<div class='success' style='text-align:center;'>Todo el equipamiento está en buen estado.</div>";
+    }
+    document.getElementById("sections").innerHTML = html;
+}
+
+function badge(label, count, color) {
+    return "<div style='flex:1; max-width:200px; text-align:center; padding:15px; border-radius:8px; background:" + color + "; color:white;'>" +
+           "<div style='font-size:28px; font-weight:bold;'>" + count + "</div>" +
+           "<div style='font-size:13px;'>" + label + "</div></div>";
+}
+
+function section(title, list, borderColor, bgColor) {
+    if (list.length === 0) return "";
+    var html = "<h3 style='color:" + borderColor + "; margin-top:25px;'>" + title + " (" + list.length + ")</h3>";
+    for (var i = 0; i < list.length; i++) {
+        var e = list[i];
+        html += "<div style='border-left:4px solid " + borderColor + "; background:" + bgColor +
+                "; padding:12px 16px; margin-bottom:10px; border-radius:4px;'>";
+        html += "<strong>" + e.name + "</strong> ";
+        html += "<span style='color:#6b7280; font-size:13px;'>(" + e.type + " · " + e.room + ")</span><br>";
+        html += "<span style='font-size:12px; color:#6b7280;'>Estado: " + e.status + " · Última revisión: " + e.lastMaintenance + "</span>";
+        html += "</div>";
+    }
+    return html;
+}
+
+loadAlerts();
+</script>
+
+</body>
+</html>

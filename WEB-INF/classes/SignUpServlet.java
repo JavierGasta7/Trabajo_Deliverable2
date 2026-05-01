@@ -21,7 +21,7 @@ public class SignUpServlet extends HttpServlet {
         out.println("<div class='card' style='max-width:480px; margin:40px auto;'>");
         out.println("<div class='title'>Crear cuenta</div>");
         out.println("<div class='subtitle'>Reg\u00edstrate para acceder a GymTrack</div>");
-        out.println("<form method='post' action='SignUpServlet'>");
+        out.println("<form method='post' action='SignUpServlet' onsubmit='return validarSignUp(this);'>");
         out.println("<label>Nombre completo</label>");
         out.println("<input type='text' name='fullName' required>");
         out.println("<label>Correo electr\u00f3nico</label>");
@@ -31,9 +31,13 @@ public class SignUpServlet extends HttpServlet {
         out.println("<label>Tel\u00e9fono</label>");
         out.println("<input type='text' name='phone' placeholder='600123456' required>");
         out.println("<label>Contrase\u00f1a</label>");
-        out.println("<input type='password' name='password' required>");
+        out.println("<input type='password' name='password' id='pwd1' required oninput='medidorPassword(this,\"pwdMeter\")'>");
+        out.println("<div id='pwdMeter' style='margin:4px 0 8px;'></div>");
         out.println("<label>Repetir contrase\u00f1a</label>");
-        out.println("<input type='password' name='password2' required>");
+        out.println("<input type='password' name='password2' id='pwd2' required>");
+        out.println("<label style='font-size:12px; font-weight:normal;'>");
+        out.println("<input type='checkbox' onclick=\"mostrarPassword('pwd1');mostrarPassword('pwd2');\"> Mostrar contrase\u00f1a");
+        out.println("</label>");
         out.println("<input type='submit' value='Crear cuenta'>");
         out.println("</form>");
         out.println("<div style='margin-top:15px; text-align:center;'>");
@@ -67,6 +71,8 @@ public class SignUpServlet extends HttpServlet {
             error = "Las contrase\u00f1as no coinciden.";
         } else if (password.length() < 6) {
             error = "La contrase\u00f1a debe tener al menos 6 caracteres.";
+        } else if (!email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            error = "El correo no tiene un formato v\u00e1lido.";
         } else if (UserData.emailExists(connection, email)) {
             error = "Ya existe una cuenta con ese correo.";
         }

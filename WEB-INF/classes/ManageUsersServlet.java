@@ -33,6 +33,27 @@ public class ManageUsersServlet extends HttpServlet {
 
         Vector<UserData> users = UserData.getAllUsers(connection, roleFilter, statusFilter, search);
 
+        if ("json".equals(req.getParameter("format"))) {
+            res.setContentType("application/json; charset=UTF-8");
+            PrintWriter jout = res.getWriter();
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < users.size(); i++) {
+                UserData u = users.elementAt(i);
+                if (i > 0) sb.append(",");
+                sb.append("{");
+                sb.append("\"userId\":").append(u.userId).append(",");
+                sb.append("\"fullName\":\"").append(jsonEsc(u.fullName)).append("\",");
+                sb.append("\"email\":\"").append(jsonEsc(u.email)).append("\",");
+                sb.append("\"role\":\"").append(jsonEsc(u.role)).append("\",");
+                sb.append("\"membershipStatus\":\"").append(jsonEsc(u.membershipStatus)).append("\"");
+                sb.append("}");
+            }
+            sb.append("]");
+            jout.print(sb.toString());
+            jout.close();
+            return;
+        }
+
         int admins = 0, instructors = 0, members = 0, inactive = 0;
         for (int i = 0; i < users.size(); i++) {
             UserData u = users.elementAt(i);
@@ -80,7 +101,11 @@ public class ManageUsersServlet extends HttpServlet {
         out.println("<div><input type='submit' value='Filtrar' style='width:auto; padding:8px 16px;'></div>");
         out.println("</form>");
 
-        out.println("<table>");
+        out.println("<div style='text-align:center; margin:10px 0;'>");
+        out.println("<input type='text' id='busquedaUsuarios' placeholder='Filtrar tabla...' oninput='filtrarTabla(\"busquedaUsuarios\",\"tablaUsuarios\")' style='padding:6px; width:60%;'>");
+        out.println("</div>");
+
+        out.println("<table id='tablaUsuarios'>");
         out.println("<tr><th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr>");
         for (int i = 0; i < users.size(); i++) {
             UserData u = users.elementAt(i);
@@ -214,6 +239,11 @@ public class ManageUsersServlet extends HttpServlet {
     }
 
     private String trim(String s) { return (s == null) ? null : s.trim(); }
+
+    private String jsonEsc(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", " ").replace("\r", " ");
+    }
 
     private String safe(String s) {
         if (s == null) return "";

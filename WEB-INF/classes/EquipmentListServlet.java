@@ -24,10 +24,35 @@ public class EquipmentListServlet extends HttpServlet {
             return;
         }
 
-        PrintWriter out = res.getWriter();
         String filterType   = req.getParameter("type");
         String filterStatus = req.getParameter("status");
 
+        if ("json".equals(req.getParameter("format"))) {
+            res.setContentType("application/json; charset=UTF-8");
+            PrintWriter jout = res.getWriter();
+            Vector<EquipmentData> jl = EquipmentData.getAll(connection, filterType, filterStatus);
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < jl.size(); i++) {
+                EquipmentData e = jl.elementAt(i);
+                if (i > 0) sb.append(",");
+                sb.append("{");
+                sb.append("\"equipmentId\":").append(e.equipmentId).append(",");
+                sb.append("\"name\":\"").append(jsonEsc(e.name)).append("\",");
+                sb.append("\"type\":\"").append(jsonEsc(e.type)).append("\",");
+                sb.append("\"room\":\"").append(jsonEsc(e.room)).append("\",");
+                sb.append("\"status\":\"").append(jsonEsc(e.status)).append("\",");
+                sb.append("\"purchasedAt\":\"").append(jsonEsc(safeDate(e.purchasedAt))).append("\",");
+                sb.append("\"lastMaintenance\":\"").append(jsonEsc(safeDate(e.lastMaintenance))).append("\",");
+                sb.append("\"notes\":\"").append(jsonEsc(e.notes)).append("\"");
+                sb.append("}");
+            }
+            sb.append("]");
+            jout.print(sb.toString());
+            jout.close();
+            return;
+        }
+
+        PrintWriter out = res.getWriter();
         out.println(Utils.header("Equipamiento", session));
 
         out.println("<div class='card' style='max-width:1100px; margin:20px auto;'>");
@@ -56,7 +81,26 @@ public class EquipmentListServlet extends HttpServlet {
 
         Vector<EquipmentData> list = EquipmentData.getAll(connection, filterType, filterStatus);
 
-        out.println("<table>");
+        int total = list.size();
+        int avail = 0, maint = 0, broken = 0;
+        for (int i = 0; i < total; i++) {
+            String st = list.elementAt(i).status;
+            if ("available".equals(st)) avail++;
+            else if ("maintenance".equals(st)) maint++;
+            else if ("broken".equals(st)) broken++;
+        }
+        out.println("<div style='display:flex; gap:10px; justify-content:center; margin:10px 0; flex-wrap:wrap;'>");
+        out.println("<div style='padding:8px 14px; border-radius:8px; background:#6b7280; color:white;'><b>" + total + "</b> total</div>");
+        out.println("<div style='padding:8px 14px; border-radius:8px; background:#10b981; color:white;'><b>" + avail + "</b> disponibles</div>");
+        out.println("<div style='padding:8px 14px; border-radius:8px; background:#f59e0b; color:white;'><b>" + maint + "</b> mantenimiento</div>");
+        out.println("<div style='padding:8px 14px; border-radius:8px; background:#ef4444; color:white;'><b>" + broken + "</b> rotos</div>");
+        out.println("</div>");
+
+        out.println("<div style='text-align:center; margin:10px 0;'>");
+        out.println("<input type='text' id='busqueda' placeholder='Buscar en la tabla...' oninput='filtrarTabla(\"busqueda\",\"tablaEquipos\")' style='padding:6px; width:60%;'>");
+        out.println("</div>");
+
+        out.println("<table id='tablaEquipos'>");
         out.println("<tr><th>Nombre</th><th>Tipo</th><th>Sala</th><th>Estado</th><th>Comprado</th><th>\u00daltima revisi\u00f3n</th><th>Notas</th><th>Acci\u00f3n</th></tr>");
         for (int i = 0; i < list.size(); i++) {
             EquipmentData e = list.elementAt(i);
@@ -88,6 +132,11 @@ public class EquipmentListServlet extends HttpServlet {
     private String safe(String s) {
         if (s == null) return "";
         return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    private String jsonEsc(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", " ").replace("\r", " ");
     }
 
     private String safeDate(String s) {

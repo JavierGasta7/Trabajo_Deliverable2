@@ -25,9 +25,6 @@ public class MaintenanceAlertServlet extends HttpServlet {
             return;
         }
 
-        PrintWriter out = res.getWriter();
-        out.println(Utils.header("Alertas de mantenimiento", session));
-
         Vector<EquipmentData> all = EquipmentData.getAll(connection, null, null);
 
         Vector<EquipmentData> critical = new Vector<EquipmentData>();
@@ -60,6 +57,24 @@ public class MaintenanceAlertServlet extends HttpServlet {
             }
         }
 
+        if ("json".equals(req.getParameter("format"))) {
+            res.setContentType("application/json; charset=UTF-8");
+            PrintWriter jout = res.getWriter();
+            StringBuilder sb = new StringBuilder("{");
+            sb.append("\"counts\":{\"critical\":").append(critical.size())
+              .append(",\"high\":").append(high.size())
+              .append(",\"medium\":").append(medium.size()).append("},");
+            sb.append("\"critical\":").append(toJsonArray(critical)).append(",");
+            sb.append("\"high\":").append(toJsonArray(high)).append(",");
+            sb.append("\"medium\":").append(toJsonArray(medium));
+            sb.append("}");
+            jout.print(sb.toString());
+            jout.close();
+            return;
+        }
+
+        PrintWriter out = res.getWriter();
+        out.println(Utils.header("Alertas de mantenimiento", session));
         out.println("<div class='card' style='max-width:1000px; margin:20px auto;'>");
         out.println("<div class='title'>Alertas de mantenimiento</div>");
         out.println("<div class='subtitle'>Equipos que requieren atenci\u00f3n, priorizados por criticidad</div>");
@@ -121,5 +136,28 @@ public class MaintenanceAlertServlet extends HttpServlet {
     private String safeDate(String s) {
         if (s == null || s.length() < 10) return "nunca";
         return s.substring(0, 10);
+    }
+
+    private String jsonEsc(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", " ").replace("\r", " ");
+    }
+
+    private String toJsonArray(Vector<EquipmentData> list) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < list.size(); i++) {
+            EquipmentData e = list.elementAt(i);
+            if (i > 0) sb.append(",");
+            sb.append("{");
+            sb.append("\"equipmentId\":").append(e.equipmentId).append(",");
+            sb.append("\"name\":\"").append(jsonEsc(e.name)).append("\",");
+            sb.append("\"type\":\"").append(jsonEsc(e.type)).append("\",");
+            sb.append("\"room\":\"").append(jsonEsc(e.room)).append("\",");
+            sb.append("\"status\":\"").append(jsonEsc(e.status)).append("\",");
+            sb.append("\"lastMaintenance\":\"").append(jsonEsc(safeDate(e.lastMaintenance))).append("\"");
+            sb.append("}");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }

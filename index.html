@@ -71,61 +71,22 @@
     </tr>
 
     <tr>
-        <td><a href="LoginServlet">LoginServlet</a></td>
-        <td>Comun</td>
-        <td>Autentica al usuario contra la BD y crea la sesi&oacute;n con los 4 atributos.</td>     
+        <td><a href="AdminDashboardServlet">AdminDashboardServlet</a></td>
+        <td>Ander</td>
+        <td>Asegui cambia en el index lo que hace este servlet!!!!!! y ponlo aqui</td>
     </tr>
 
     <tr>
-        <td><a href="LogoutServlet">LogoutServlet</a></td>
-        <td>Marco</td>
-        <td>Invalida la sesi&oacute;n y redirige a login.html.</td>   
-    </tr>
-
-    <tr>
-        <td><a href="BrowseClassesServlet">browseClasses.html</a></td>
-        <td>Marco</td>
-        <td>Lista las clases disponibles con filtros por tipo de actividad e instructor. Muestra plazas ocupadas / capacidad.</td>
-        
-    </tr>
-	
-    <tr>
-        <td><a href="BookClassServlet?classId=4">BookClassServlet</a></td>
-        <td>Marco</td>
-        <td>Reserva una plaza en una clase. Valida: membres&iacute;a activa, no duplicada, plazas disponibles.</td>
-    </tr>
-
-    <tr>
-        <td><a href="CancelBookingServlet?bookingId=1">CancelBookingServlet</a></td>
-        <td>Marco</td>
-        <td>Cancela una reserva existente. Valida que queden m&aacute;s de 2 horas para el inicio. Libera la plaza.</td>
-    </tr>
-	
-	<tr>
-        <td><a href="BookingHistoryServlet">bookingHistory.html</a></td>
-        <td>Marco</td>
-        <td>Muestra el historial de reservas del usuario registrado.</td>
+        <td><a href="ManageUsersServlet">ManageUsersServlet</a></td>
+        <td>Ander</td>
+        <td>Gesti&oacute;n de usuarios para admin: listado con filtros por rol/estado, b&uacute;squeda, cambio de rol y activaci&oacute;n/desactivaci&oacute;n de membres&iacute;a. Bloquea modificar la propia cuenta.</td>
     </tr>
 
     <tr>
         <td><a href="OccupancyMonitorServlet">OccupancyMonitorServlet</a></td>
         <td>Ander</td>
-        <td>Muestra la ocupaci&oacute;n a tiempo real de las clases disponibles.</td>     
+        <td>Asegui cambia en el index lo que hace este servlet!!!!!! y ponlo aqui</td>
     </tr>
-	
-	<tr>
-		<td><a href="AdminDashboardServlet">AdminDashboardServlet</a></td>
-        <td>Ander</td>
-        <td>Muestra todas las funcionalidades a las que puede acceder el administrador.</td>
-	</tr>
-	
-	    <tr>
-        <td><a href="ManageUsersServlet">ManageUsersServlet</a></td>
-        <td>Ander</td>
-        <td>Gesti&oacute;n de usuarios para admin: listado con filtros por rol/estado, b&uacute;squeda, cambio de rol y activaci&oacute;n/desactivaci&oacute;n de membres&iacute;a. Bloquea modificar la propia cuenta.</td>
-    </tr>
-	
-	
 
     <tr>
         <td><a href="RateClassServlet">RateClassServlet</a></td>
@@ -133,48 +94,17 @@
         <td>Listado de clases completadas pendientes de valorar y formulario de puntuaci&oacute;n (1-5 estrellas + comentario). Valida asistencia y evita valoraciones duplicadas.</td>
     </tr>
 
-
     <tr>
-        <td><a href="SignUpServlet">SignUpServlet</a></td>
-        <td>Kepa</td>
-        <td>Registro de nuevos usuarios. Valida campos obligatorios, contrase&ntilde;as coincidentes y email no duplicado antes de insertar en la BD.</td>
+        <td><a href="LoginServlet">LoginServlet</a></td>
+        <td>Com&uacute;n</td>
+        <td>Autentica al usuario contra la BD y crea la sesi&oacute;n con los 4 atributos.</td>
     </tr>
 
     <tr>
-        <td><a href="EquipmentListServlet">EquipmentListServlet</a></td>
-        <td>Kepa</td>
-        <td>Lista todo el equipamiento del gimnasio con filtros por tipo y estado. Muestra el estado con badges de color.</td>
+        <td><a href="LogoutServlet">LogoutServlet</a></td>
+        <td>Com&uacute;n</td>
+        <td>Invalida la sesi&oacute;n y redirige a login.html.</td>
     </tr>
-
-    <tr>
-        <td><a href="AddEquipmentServlet">AddEquipmentServlet</a></td>
-        <td>Kepa</td>
-        <td>Formulario para que el admin d&eacute; de alta una nueva m&aacute;quina o material en el gimnasio.</td>
-    </tr>
-
-    <tr>
-        <td><a href="EditEquipmentServlet?id=1">EditEquipmentServlet</a></td>
-        <td>Kepa</td>
-        <td>Modifica los datos de un equipo existente (nombre, tipo, sala, estado, fecha de revisi&oacute;n y notas).</td>
-    </tr>
-
-    <tr>
-        <td><a href="MaintenanceAlertServlet">MaintenanceAlertServlet</a></td>
-        <td>Kepa</td>
-        <td>Panel creativo de alertas priorizadas: detecta equipos rotos, con revisi&oacute;n vencida (&gt;6 meses) o en mantenimiento, y muestra contadores y accesos directos para resolverlos.</td>
-    </tr>
-	
-	<tr>
-		<td><a href="InstructorDashboardServlet">InstructorDashboardServlet</a></td>
-        <td>Kepa</td>
-        <td>Muestra todas las funcionalidades a las que puede acceder el instructor.</td>
-	</tr>
-	
-	<tr>
-		<td><a href="MemberDashboardServlet">MemberDashboardServlet</a></td>
-        <td>Kepa</td>
-        <td>Muestra todas las funcionalidades a las que puede acceder un miembro del gimnasio.</td>
-	</tr>
 
     <tr>
         <td><a href="ClassRosterServlet">ClassRosterServlet</a></td>
@@ -200,7 +130,79 @@
         <td>Panel creativo con las estad&iacute;sticas del miembro: tasa de asistencia con barra de progreso, actividad favorita y medalla de fidelidad (Bronce/Plata/Oro).</td>
     </tr>
 
+    <tr>
+        <td><a href="AddEquipmentServlet">AddEquipmentServlet</a></td>
+        <td>Kepa</td>
+        <td>Formulario para que el admin d&eacute; de alta una nueva m&aacute;quina o material en el gimnasio.</td>
+    </tr>
 
+    <tr>
+        <td><a href="EditEquipmentServlet?id=1">EditEquipmentServlet</a></td>
+        <td>Kepa</td>
+        <td>Modifica los datos de un equipo existente (nombre, tipo, sala, estado, fecha de revisi&oacute;n y notas).</td>
+    </tr>
+
+    <tr>
+        <td><a href="EquipmentListServlet">EquipmentListServlet</a></td>
+        <td>Kepa</td>
+        <td>Lista todo el equipamiento del gimnasio con filtros por tipo y estado. Muestra el estado con badges de color.</td>
+    </tr>
+
+    <tr>
+        <td><a href="MaintenanceAlertServlet">MaintenanceAlertServlet</a></td>
+        <td>Kepa</td>
+        <td>Panel creativo de alertas priorizadas: detecta equipos rotos, con revisi&oacute;n vencida (&gt;6 meses) o en mantenimiento, y muestra contadores y accesos directos para resolverlos.</td>
+    </tr>
+
+    <tr>
+        <td><a href="SignUpServlet">SignUpServlet</a></td>
+        <td>Kepa</td>
+        <td>Registro de nuevos usuarios. Valida campos obligatorios, contrase&ntilde;as coincidentes y email no duplicado antes de insertar en la BD.</td>
+    </tr>
+
+    <tr>
+        <td><a href="BookClassServlet?classId=4">BookClassServlet</a></td>
+        <td>Marco</td>
+        <td>Reserva una plaza en una clase. Valida: membres&iacute;a activa, no duplicada, plazas disponibles.</td>
+    </tr>
+
+    <tr>
+        <td><a href="BrowseClassesServlet">BrowseClassesServlet</a></td>
+        <td>Marco</td>
+        <td>Lista las clases disponibles con filtros por tipo de actividad e instructor. Muestra plazas ocupadas / capacidad.</td>
+    </tr>
+
+    <tr>
+        <td><a href="CancelBookingServlet?bookingId=1">CancelBookingServlet</a></td>
+        <td>Marco</td>
+        <td>Cancela una reserva existente. Valida que queden m&aacute;s de 2 horas para el inicio. Libera la plaza.</td>
+    </tr>
+
+</table>
+
+<h2>Versiones AJAX (Kepa)</h2>
+
+<table style="max-width:1000px;">
+    <tr>
+        <th>P&aacute;gina</th>
+        <th>Servlet base</th>
+        <th>Descripci&oacute;n</th>
+    </tr>
+    <tr>
+        <td><a href="equipmentList.html">equipmentList.html</a></td>
+        <td>EquipmentListServlet</td>
+        <td>Listado de equipamiento con filtros por tipo y estado. La tabla se recarga sin refrescar la p&aacute;gina.</td>
+    </tr>
+    <tr>
+        <td><a href="maintenanceAlert.html">maintenanceAlert.html</a></td>
+        <td>MaintenanceAlertServlet</td>
+        <td>Panel de alertas de mantenimiento cargado por AJAX (cr&iacute;ticos / altos / medios).</td>
+    </tr>
+    <tr>
+        <td><a href="manageUsers.html">manageUsers.html</a></td>
+        <td>ManageUsersServlet</td>
+        <td>Tabla de usuarios con filtros vivos por rol, estado y b&uacute;squeda. Sin recarga de p&aacute;gina.</td>
+    </tr>
 </table>
 
 </body>
