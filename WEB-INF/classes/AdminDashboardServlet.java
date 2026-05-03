@@ -39,35 +39,35 @@ public class AdminDashboardServlet extends HttpServlet {
         toClient.println("        <div class='title'>Control de Usuarios</div>");
         toClient.println("        <p>Aprobar nuevos registros o gestionar estados de membres\u00eda.</p>");
         // Aquí puedes poner el enlace al servlet que gestiona usuarios o recargar esta misma página con parámetros
-        toClient.println("        <a href='ManageUsersServlet'><button class='primary' style='width:100%'>Gestionar Usuarios</button></a>");
+        toClient.println("        <a href='ManageUsersServlet' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Gestionar Usuarios</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 2: Catálogo Maestro (Trabajo de Ander)
         toClient.println("    <div class='card' style='width: 280px;'>");
         toClient.println("        <div class='title'>Cat\u00e1logo de Clases</div>");
         toClient.println("        <p>A\u00f1adir, editar o cancelar clases del gimnasio.</p>");
-        toClient.println("        <a href='ClassCatalogueServlet'><button class='primary' style='width:100%'>Editar Cat\u00e1logo</button></a>");
+        toClient.println("        <a href='ClassCatalogueServlet' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Editar Cat\u00e1logo</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 3: Monitor de Ocupación
         toClient.println("    <div class='card' style='width: 280px;'>");
         toClient.println("        <div class='title'>M\u00e9tricas en Vivo</div>");
         toClient.println("        <p>Ver el estado de ocupaci\u00f3n de todas las salas.</p>");
-        toClient.println("        <a href='OccupancyMonitorServlet'><button class='primary' style='width:100%'>Abrir Monitor</button></a>");
+        toClient.println("        <a href='OccupancyMonitorServlet' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Abrir Monitor</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 4: Equipamiento
         toClient.println("    <div class='card' style='width: 280px;'>");
         toClient.println("        <div class='title'>Equipamiento</div>");
         toClient.println("        <p>Gestionar m\u00e1quinas y material del gimnasio.</p>");
-        toClient.println("        <a href='EquipmentListServlet'><button class='primary' style='width:100%'>Ver Equipamiento</button></a>");
+        toClient.println("        <a href='EquipmentListServlet' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Ver Equipamiento</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 5: Alertas de mantenimiento
         toClient.println("    <div class='card' style='width: 280px;'>");
         toClient.println("        <div class='title'>Alertas de Mantenimiento</div>");
         toClient.println("        <p>Equipos rotos o con revisi\u00f3n pendiente.</p>");
-        toClient.println("        <a href='MaintenanceAlertServlet'><button class='primary' style='width:100%'>Ver Alertas</button></a>");
+        toClient.println("        <a href='MaintenanceAlertServlet' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Ver Alertas</button></a>");
         toClient.println("    </div>");
 
         toClient.println("</div>");

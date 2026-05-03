@@ -42,35 +42,35 @@ public class MemberDashboardServlet extends HttpServlet {
         toClient.println("    <div class='card' style='width: 250px;'>");
         toClient.println("        <div class='title'>Reservar Clase</div>");
         toClient.println("        <p>Consulta los horarios disponibles y ap\u00fantate.</p>");
-        toClient.println("        <a href='browseClasses.html'><button class='primary' style='width:100%'>Ver Clases</button></a>");
+        toClient.println("        <a href='browseClasses.html' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Ver Clases</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 2: Mis Reservas (Trabajo de Marco)
         toClient.println("    <div class='card' style='width: 250px;'>");
         toClient.println("        <div class='title'>Mi Historial</div>");
         toClient.println("        <p>Revisa tus clases programadas o cancela una reserva.</p>");
-        toClient.println("        <a href='bookingHistory.html'><button class='primary' style='width:100%'>Ver Mis Citas</button></a>");
+        toClient.println("        <a href='bookingHistory.html' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Ver Mis Citas</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 3: Valorar (Trabajo de Ander/Compañeros)
         toClient.println("    <div class='card' style='width: 250px;'>");
         toClient.println("        <div class='title'>Tu Opini\u00f3n</div>");
         toClient.println("        <p>\u00bfQu\u00e9 te pareci\u00f3 la clase? Ay\u00fadanos a mejorar.</p>");
-        toClient.println("        <a href='RateClassServlet'><button class='primary' style='width:100%'>Valorar Clases</button></a>");
+        toClient.println("        <a href='RateClassServlet' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Valorar Clases</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 4: Editar perfil (Javier)
         toClient.println("    <div class='card' style='width: 250px;'>");
         toClient.println("        <div class='title'>Editar Perfil</div>");
         toClient.println("        <p>Actualiza tu nombre, tel\u00e9fono y fecha de nacimiento.</p>");
-        toClient.println("        <a href='EditProfileServlet'><button class='primary' style='width:100%'>Mi Perfil</button></a>");
+        toClient.println("        <a href='EditProfileServlet' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Mi Perfil</button></a>");
         toClient.println("    </div>");
 
         // TARJETA 5: Mis estadísticas (Javier)
         toClient.println("    <div class='card' style='width: 250px;'>");
         toClient.println("        <div class='title'>Mis Estad\u00edsticas</div>");
         toClient.println("        <p>Consulta tu tasa de asistencia, actividad favorita y medalla de fidelidad.</p>");
-        toClient.println("        <a href='PersonalStatsServlet'><button class='primary' style='width:100%'>Ver Estad\u00edsticas</button></a>");
+        toClient.println("        <a href='PersonalStatsServlet' style='display:block; text-align:center; margin-top:15px;'><button class='primary' type='button' style='width:auto; padding:10px 22px;'>Ver Estad\u00edsticas</button></a>");
         toClient.println("    </div>");
 
         toClient.println("</div>");

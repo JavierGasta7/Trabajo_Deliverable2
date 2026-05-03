@@ -60,15 +60,17 @@ public class MaintenanceAlertServlet extends HttpServlet {
         if ("json".equals(req.getParameter("format"))) {
             res.setContentType("application/json; charset=UTF-8");
             PrintWriter jout = res.getWriter();
-            StringBuilder sb = new StringBuilder("{");
-            sb.append("\"counts\":{\"critical\":").append(critical.size())
-              .append(",\"high\":").append(high.size())
-              .append(",\"medium\":").append(medium.size()).append("},");
-            sb.append("\"critical\":").append(toJsonArray(critical)).append(",");
-            sb.append("\"high\":").append(toJsonArray(high)).append(",");
-            sb.append("\"medium\":").append(toJsonArray(medium));
-            sb.append("}");
-            jout.print(sb.toString());
+
+            jout.print("{");
+            jout.print("\"counts\":{");
+            jout.print("\"critical\":" + critical.size() + ",");
+            jout.print("\"high\":"     + high.size()     + ",");
+            jout.print("\"medium\":"   + medium.size());
+            jout.print("},");
+            jout.print("\"critical\":"); writeJsonArray(jout, critical); jout.print(",");
+            jout.print("\"high\":");     writeJsonArray(jout, high);     jout.print(",");
+            jout.print("\"medium\":");   writeJsonArray(jout, medium);
+            jout.print("}");
             jout.close();
             return;
         }
@@ -116,12 +118,17 @@ public class MaintenanceAlertServlet extends HttpServlet {
         for (int i = 0; i < list.size(); i++) {
             EquipmentData e = list.elementAt(i);
             out.println("<div style='border-left:4px solid " + borderColor + "; background:" + bgColor +
-                        "; padding:12px 16px; margin-bottom:10px; border-radius:4px; display:flex; justify-content:space-between; align-items:center;'>");
+                        "; padding:12px 16px; margin-bottom:10px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; gap:14px;'>");
+            out.println("<div style='display:flex; align-items:center; gap:14px; flex:1;'>");
+            out.println("<img src='" + imageFor(e.type) + "' alt='" + safe(e.type) + "' "
+                + "style='width:64px; height:64px; object-fit:cover; border-radius:6px; border:1px solid #e5e7eb; flex-shrink:0;' "
+                + "onerror=\"this.src='img/equipment/default.jpg'\">");
             out.println("<div>");
             out.println("<strong>" + safe(e.name) + "</strong> " +
                         "<span style='color:#6b7280; font-size:13px;'>(" + safe(e.type) + " \u00b7 " + safe(e.room) + ")</span><br>");
             out.println("<span style='font-size:12px; color:#6b7280;'>Estado: " + safe(e.status) +
                         " \u00b7 \u00daltima revisi\u00f3n: " + safeDate(e.lastMaintenance) + "</span>");
+            out.println("</div>");
             out.println("</div>");
             out.println("<a href='EditEquipmentServlet?id=" + e.equipmentId + "'><button class='primary' type='button' style='width:auto; padding:6px 14px;'>Resolver</button></a>");
             out.println("</div>");
@@ -138,26 +145,34 @@ public class MaintenanceAlertServlet extends HttpServlet {
         return s.substring(0, 10);
     }
 
+    private String imageFor(String type) {
+        if (type == null) return "img/equipment/default.jpg";
+        if ("cardio".equalsIgnoreCase(type)) return "img/equipment/cardio.jpg";
+        if ("fuerza".equalsIgnoreCase(type)) return "img/equipment/fuerza.jpg";
+        if ("libre".equalsIgnoreCase(type))  return "img/equipment/libre.jpg";
+        return "img/equipment/default.jpg";
+    }
+
     private String jsonEsc(String s) {
         if (s == null) return "";
         return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", " ").replace("\r", " ");
     }
 
-    private String toJsonArray(Vector<EquipmentData> list) {
-        StringBuilder sb = new StringBuilder("[");
+    private void writeJsonArray(PrintWriter out, Vector<EquipmentData> list) {
+        out.print("[");
         for (int i = 0; i < list.size(); i++) {
             EquipmentData e = list.elementAt(i);
-            if (i > 0) sb.append(",");
-            sb.append("{");
-            sb.append("\"equipmentId\":").append(e.equipmentId).append(",");
-            sb.append("\"name\":\"").append(jsonEsc(e.name)).append("\",");
-            sb.append("\"type\":\"").append(jsonEsc(e.type)).append("\",");
-            sb.append("\"room\":\"").append(jsonEsc(e.room)).append("\",");
-            sb.append("\"status\":\"").append(jsonEsc(e.status)).append("\",");
-            sb.append("\"lastMaintenance\":\"").append(jsonEsc(safeDate(e.lastMaintenance))).append("\"");
-            sb.append("}");
+            if (i > 0) out.print(",");
+            out.print("{");
+            out.print("\"equipmentId\":"       + e.equipmentId + ",");
+            out.print("\"name\":\""            + jsonEsc(e.name)                      + "\",");
+            out.print("\"type\":\""            + jsonEsc(e.type)                      + "\",");
+            out.print("\"room\":\""            + jsonEsc(e.room)                      + "\",");
+            out.print("\"status\":\""          + jsonEsc(e.status)                    + "\",");
+            out.print("\"lastMaintenance\":\"" + jsonEsc(safeDate(e.lastMaintenance)) + "\",");
+            out.print("\"image\":\""           + jsonEsc(imageFor(e.type))            + "\"");
+            out.print("}");
         }
-        sb.append("]");
-        return sb.toString();
+        out.print("]");
     }
 }

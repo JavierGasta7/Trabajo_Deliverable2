@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Browse Classes</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
@@ -15,19 +15,23 @@
 
 <div class="subheader">Browse Classes</div>
 
-<div style="text-align:center; margin:20px;">
-    Clase: <select id="filterClass" onchange="loadClasses()" style="padding:6px; margin-right:10px;">
-        <option value="">-- Todas --</option>
-    </select>
-    Instructor: <select id="filterInstructor" onchange="loadClasses()" style="padding:6px; margin-right:10px;">
-        <option value="">-- Todos --</option>
-    </select>
-</div>
+<div class="card" style="max-width:1100px; margin:20px auto;">
+    <div class="title">Clases disponibles</div>
 
-<div id="results"></div>
+    <div style="text-align:center; margin:15px;">
+        Clase: <select id="filterClass" onchange="loadClasses()" style="padding:6px; margin-right:10px;">
+            <option value="">-- Todas --</option>
+        </select>
+        Instructor: <select id="filterInstructor" onchange="loadClasses()" style="padding:6px; margin-right:10px;">
+            <option value="">-- Todos --</option>
+        </select>
+    </div>
 
-<div style="text-align:center; margin:20px;">
-    <a href="bookingHistory.html">My bookings &rarr;</a>
+    <div id="results"></div>
+
+    <div style="text-align:center; margin-top:20px;">
+        <a href="bookingHistory.html">My bookings &rarr;</a>
+    </div>
 </div>
 
 <script>

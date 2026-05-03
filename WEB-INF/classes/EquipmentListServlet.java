@@ -31,23 +31,24 @@ public class EquipmentListServlet extends HttpServlet {
             res.setContentType("application/json; charset=UTF-8");
             PrintWriter jout = res.getWriter();
             Vector<EquipmentData> jl = EquipmentData.getAll(connection, filterType, filterStatus);
-            StringBuilder sb = new StringBuilder("[");
+
+            jout.print("[");
             for (int i = 0; i < jl.size(); i++) {
                 EquipmentData e = jl.elementAt(i);
-                if (i > 0) sb.append(",");
-                sb.append("{");
-                sb.append("\"equipmentId\":").append(e.equipmentId).append(",");
-                sb.append("\"name\":\"").append(jsonEsc(e.name)).append("\",");
-                sb.append("\"type\":\"").append(jsonEsc(e.type)).append("\",");
-                sb.append("\"room\":\"").append(jsonEsc(e.room)).append("\",");
-                sb.append("\"status\":\"").append(jsonEsc(e.status)).append("\",");
-                sb.append("\"purchasedAt\":\"").append(jsonEsc(safeDate(e.purchasedAt))).append("\",");
-                sb.append("\"lastMaintenance\":\"").append(jsonEsc(safeDate(e.lastMaintenance))).append("\",");
-                sb.append("\"notes\":\"").append(jsonEsc(e.notes)).append("\"");
-                sb.append("}");
+                if (i > 0) jout.print(",");
+                jout.print("{");
+                jout.print("\"equipmentId\":" + e.equipmentId + ",");
+                jout.print("\"name\":\""            + jsonEsc(e.name)                       + "\",");
+                jout.print("\"type\":\""            + jsonEsc(e.type)                       + "\",");
+                jout.print("\"room\":\""            + jsonEsc(e.room)                       + "\",");
+                jout.print("\"status\":\""          + jsonEsc(e.status)                     + "\",");
+                jout.print("\"purchasedAt\":\""     + jsonEsc(safeDate(e.purchasedAt))      + "\",");
+                jout.print("\"lastMaintenance\":\"" + jsonEsc(safeDate(e.lastMaintenance))  + "\",");
+                jout.print("\"notes\":\""           + jsonEsc(e.notes)                      + "\",");
+                jout.print("\"image\":\""           + jsonEsc(imageFor(e.type))             + "\"");
+                jout.print("}");
             }
-            sb.append("]");
-            jout.print(sb.toString());
+            jout.print("]");
             jout.close();
             return;
         }
@@ -105,7 +106,11 @@ public class EquipmentListServlet extends HttpServlet {
         for (int i = 0; i < list.size(); i++) {
             EquipmentData e = list.elementAt(i);
             out.println("<tr>");
-            out.println("<td>" + safe(e.name) + "</td>");
+            out.println("<td><div style='display:flex; align-items:center; gap:10px;'>"
+                + "<img src='" + imageFor(e.type) + "' alt='" + safe(e.type) + "' "
+                + "style='width:48px; height:48px; object-fit:cover; border-radius:6px; border:1px solid #e5e7eb;' "
+                + "onerror=\"this.src='img/equipment/default.jpg'\">"
+                + "<span>" + safe(e.name) + "</span></div></td>");
             out.println("<td>" + safe(e.type) + "</td>");
             out.println("<td>" + safe(e.room) + "</td>");
             out.println("<td>" + badge(e.status) + "</td>");
@@ -143,6 +148,14 @@ public class EquipmentListServlet extends HttpServlet {
         if (s == null) return "-";
         if (s.length() >= 10) return s.substring(0, 10);
         return s;
+    }
+
+    private String imageFor(String type) {
+        if (type == null) return "img/equipment/default.jpg";
+        if ("cardio".equalsIgnoreCase(type)) return "img/equipment/cardio.jpg";
+        if ("fuerza".equalsIgnoreCase(type)) return "img/equipment/fuerza.jpg";
+        if ("libre".equalsIgnoreCase(type))  return "img/equipment/libre.jpg";
+        return "img/equipment/default.jpg";
     }
 
     private String badge(String status) {

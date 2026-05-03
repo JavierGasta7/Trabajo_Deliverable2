@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Equipamiento (AJAX)</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
@@ -60,7 +60,7 @@ function loadEquipment() {
 
 function buildTable(data) {
     var div = document.getElementById("results");
-    var headers = ["Nombre", "Tipo", "Sala", "Estado", "Comprado", "Última revisión", "Notas"];
+    var headers = ["", "Nombre", "Tipo", "Sala", "Estado", "Comprado", "Última revisión", "Notas"];
     var html = "<table><tr>";
     for (var h = 0; h < headers.length; h++) html += "<th>" + headers[h] + "</th>";
     html += "</tr>";
@@ -70,7 +70,9 @@ function buildTable(data) {
     }
     for (var i = 0; i < data.length; i++) {
         var e = data[i];
+        var img = e.image || "img/equipment/default.jpg";
         html += "<tr>";
+        html += "<td><img src='" + img + "' alt='' style='width:48px; height:48px; object-fit:cover; border-radius:6px; border:1px solid #e5e7eb;' onerror=\"this.src='img/equipment/default.jpg'\"></td>";
         html += "<td>" + e.name + "</td>";
         html += "<td>" + e.type + "</td>";
         html += "<td>" + e.room + "</td>";

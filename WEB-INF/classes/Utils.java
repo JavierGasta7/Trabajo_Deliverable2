@@ -21,7 +21,7 @@ public class Utils {
         str.append("<!DOCTYPE HTML><html><head>");
         str.append("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
         str.append("<title>" + title + "</title>");
-        str.append("<link rel='stylesheet' href='style.css'>");
+        str.append("<link rel='stylesheet' href='style.css?v=" + System.currentTimeMillis() + "'>");
         str.append("<script>");
         str.append("function confirmarBorrar(msg){return confirm(msg||'¿Seguro que quieres realizar esta acción?');}");
         str.append("function validarSignUp(f){if(f.password.value!==f.password2.value){alert('Las contraseñas no coinciden');return false;}if(f.password.value.length<6){alert('La contraseña debe tener al menos 6 caracteres');return false;}if(!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(f.email.value)){alert('Email no válido');return false;}return true;}");
@@ -32,7 +32,7 @@ public class Utils {
         str.append("function filtrarTabla(idInput,idTabla){var q=document.getElementById(idInput).value.toLowerCase();var t=document.getElementById(idTabla);if(!t)return;var r=t.getElementsByTagName('tr');for(var i=1;i<r.length;i++){r[i].style.display=r[i].innerText.toLowerCase().indexOf(q)>=0?'':'none';}}");
         str.append("function marcarReparadoHoy(){var s=document.getElementsByName('status')[0];var d=document.getElementsByName('lastMaintenance')[0];if(s)s.value='available';if(d){var t=new Date();d.value=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}}");
         str.append("function contarComentario(input,spanId){var s=document.getElementById(spanId);if(s)s.textContent=input.value.length+'/500';}");
-        str.append("function medidorPassword(input,divId){var d=document.getElementById(divId);if(!d)return;var v=input.value;var s=0;if(v.length>=6)s++;if(v.length>=10)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;var col=['#e5e7eb','#ef4444','#f59e0b','#eab308','#10b981','#059669'];var lab=['','Muy débil','Débil','Media','Fuerte','Muy fuerte'];var w=(s*20)+'%';d.innerHTML=\"<div style='background:#e5e7eb; height:6px; border-radius:3px; overflow:hidden;'><div style='height:6px; width:\"+w+\"; background:\"+col[s]+\";'></div></div><div style='font-size:11px; color:\"+col[s]+\"; margin-top:2px;'>\"+lab[s]+\"</div>\";}");
+        str.append("function medidorPassword(input,divId){var d=document.getElementById(divId);if(!d)return;var v=input.value;var s=0;if(v.length>=6)s++;if(v.length>=10)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;var col=['#e5e7eb','#ef4444','#f59e0b','#eab308','#10b981','#059669'];var lab=['','Muy d&eacute;bil','D&eacute;bil','Media','Fuerte','Muy fuerte'];var w=(s*20)+'%';d.innerHTML=\"<div style='background:#e5e7eb; height:6px; border-radius:3px; overflow:hidden;'><div style='height:6px; width:\"+w+\"; background:\"+col[s]+\";'></div></div><div style='font-size:11px; color:\"+col[s]+\"; margin-top:2px;'>\"+lab[s]+\"</div>\";}");
         str.append("</script>");
         str.append("</head><body>");
         
